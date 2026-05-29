@@ -1717,7 +1717,6 @@ ${notes?`\n📝 *Notes:* ${notes}`:''}
             ${l.description ? `<div style="font-size:0.84rem;color:var(--text-muted);margin-bottom:10px;line-height:1.5;">${escapeHtml(l.description)}</div>` : ''}
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
               <div style="font-size:0.82rem;color:var(--text-muted);">Owner: <strong>${escapeHtml(l.owner_name)}</strong></div>
-              <div style="font-size:0.82rem;font-weight:700;color:var(--primary);">📞 ${escapeHtml(l.phone)}</div>
             </div>
             <div style="display:flex;gap:8px;margin-top:10px;">
               <a href="tel:${escapeHtml(l.phone)}" style="flex:1;text-align:center;background:linear-gradient(135deg,#6c63ff,#4f46e5);color:#fff;border-radius:8px;padding:9px 10px;font-size:0.82rem;font-weight:700;text-decoration:none;">📞 Call</a>
