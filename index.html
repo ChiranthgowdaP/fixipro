@@ -40,41 +40,7 @@
       min-height: 100vh;
     }
 
-    /* ── INTRO VIDEO OVERLAY ── */
-    #introOverlay {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0f0f1a;
-      overflow: hidden;
-      opacity: 1;
-      transition: opacity 0.4s ease;
-    }
-    #introOverlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    #introVideo {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      display: block;
-      filter: saturate(1.05) contrast(1.02);
-    }
-    #introFallback {
-      position: absolute;
-      bottom: 28px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      color: rgba(241,241,248,0.9);
-      font-weight: 600;
-      letter-spacing: 0.2px;
-      font-size: 0.95rem;
-    }
+
 
     /* ── ANIMATED BACKGROUND ── */
     .bg-orbs {
@@ -630,13 +596,7 @@
 </head>
 <body>
 
-<!-- INTRO VIDEO OVERLAY -->
-<div id="introOverlay" aria-hidden="true">
-  <video id="introVideo" autoplay muted playsinline preload="auto">
-    <source src="assets/Fixipro App Logo_20260528_122845_0000.mp4" type="video/mp4" />
-  </video>
-  <div id="introFallback">Loading…</div>
-</div>
+
 
 
 <!-- bg orbs -->
@@ -2203,54 +2163,7 @@ const waURL = 'https://wa.me/919110426336?text=' + encodeURIComponent(msg);
     if (e.key === 'ArrowLeft'  && document.getElementById('lightbox').classList.contains('active')) lightboxNav(-1);
   });
 
-  // ── INTRO VIDEO ──
-  (function initIntroVideo() {
-    const overlay = document.getElementById('introOverlay');
-    const video = document.getElementById('introVideo');
-    if (!overlay || !video) return;
 
-    let done = false;
-    const hide = () => {
-      if (done) return;
-      done = true;
-      overlay.classList.add('hidden');
-      overlay.setAttribute('aria-hidden', 'true');
-      // remove from layout after fade
-      setTimeout(() => {
-        overlay.style.display = 'none';
-      }, 650);
-    };
-
-    const fallbackMs = 1800;
-
-    const t = setTimeout(hide, fallbackMs);
-
-    video.addEventListener('ended', () => {
-      clearTimeout(t);
-      hide();
-    });
-
-    // Attempt autoplay. Some browsers may block; fallback will still hide.
-    const tryPlay = async () => {
-      try {
-        await video.play();
-        // If metadata is loaded very quickly and video is already at end, handle it.
-        if (video.ended) {
-          clearTimeout(t);
-          hide();
-        }
-      } catch (e) {
-        // Ignore - fallback timeout will hide overlay.
-      }
-    };
-
-    // Start as soon as possible
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', tryPlay, { once: true });
-    } else {
-      tryPlay();
-    }
-  })();
 </script>
 </body>
 </html>
