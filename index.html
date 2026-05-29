@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fixipro – All Services at Your Doorstep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+      --primary: #6c63ff;
+      --primary-dark: #4f46e5;
+      --secondary: #f59e0b;
+      --accent: #10b981;
+      --danger: #ef4444;
+
+      /* White / light UI */
+      --bg: #ffffff;
+      --bg2: #f6f7fb;
+      --bg3: #eef1f7;
+      --card: #ffffff;
+
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: rgba(2, 6, 23, 0.10);
+
+      --radius: 18px;
+      --shadow: 0 8px 40px rgba(2,6,23,0.10);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── INTRO VIDEO OVERLAY ── */
+    #introOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f0f1a;
+      overflow: hidden;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+    #introOverlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #introVideo {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.05) contrast(1.02);
+    }
+    #introFallback {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: rgba(241,241,248,0.9);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      font-size: 0.95rem;
+    }
+
+    /* ── ANIMATED BACKGROUND ── */
+    .bg-orbs {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.18;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+    .orb1 { width:500px; height:500px; background:#6c63ff; top:-120px; left:-100px; animation-delay:0s; }
+    .orb2 { width:400px; height:400px; background:#10b981; top:40%; right:-120px; animation-delay:-4s; }
+    .orb3 { width:350px; height:350px; background:#f59e0b; bottom:-100px; left:30%; animation-delay:-6s; }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(40px) scale(1.06); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 60px;
+      background: rgba(179, 225, 245, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.4s;
+    }
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      background: linear-gradient(135deg, #060f03, #0f100f);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color:#228ac5;-webkit-text-fill-color:#00b6a6;}
+    .nav-links { display: flex; gap: 36px; align-items: center; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-weight: 500;
+      font-size: 0.95rem; transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px;
+      background:var(--primary); border-radius:2px; transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width:100%; }
+    .btn-nav {
+      background: linear-gradient(135deg, #6c63ff, #4f46e5);
+      color: white; border: none; padding: 10px 26px;
+      border-radius: 50px; font-weight: 600; cursor: pointer;
+      font-size: 0.9rem; transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(108,99,255,0.35);
+    }
+    .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,0.5); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 140px 24px 80px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(108,99,255,0.15); border: 1px solid rgba(108,99,255,0.35);
+      color: #a5a0ff; font-size: 0.82rem; font-weight: 600;
+      padding: 6px 18px; border-radius: 50px;
+      margin-bottom: 28px;
+      animation: fadeDown 0.8s ease both;
+    }
+    .hero-badge .dot { width:7px; height:7px; background:#10b981; border-radius:50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.4);} }
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      font-weight: 800; line-height: 1.1;
+      animation: fadeDown 0.9s 0.1s ease both;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(135deg, #6c63ff 0%, #a78bfa 40%, #10b981 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      max-width: 580px; margin: 22px auto 0;
+      color: var(--text-muted); font-size: 1.1rem; line-height: 1.7;
+      animation: fadeDown 1s 0.2s ease both;
+    }
+    .hero-cta {
+      margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+      animation: fadeDown 1.1s 0.3s ease both;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6c63ff, #4f46e5);
+      color: white; border: none; padding: 15px 38px;
+      border-radius: 50px; font-weight: 700; cursor: pointer;
+      font-size: 1rem; transition: all 0.3s;
+      box-shadow: 0 6px 28px rgba(108,99,255,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(108,99,255,0.55); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text); border: 1.5px solid var(--border);
+      padding: 15px 38px; border-radius: 50px;
+      font-weight: 600; cursor: pointer; font-size: 1rem;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: rgba(108,99,255,0.08); }
+
+    .hero-stats {
+      margin-top: 64px; display: flex; gap: 48px; flex-wrap: wrap; justify-content: center;
+      animation: fadeDown 1.2s 0.4s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.1rem; font-weight: 800;
+      background: linear-gradient(135deg, #6c63ff, #10b981);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+
+    @keyframes fadeDown {
+      from { opacity:0; transform: translateY(-22px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── SECTION COMMON ── */
+    section { position: relative; z-index: 1; padding: 100px 24px; }
+    .section-title {
+      text-align: center; margin-bottom: 16px;
+      font-family: 'Poppins', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+    }
+    .section-sub {
+      text-align: center; color: var(--text-muted);
+      max-width: 520px; margin: 0 auto 56px; font-size: 1rem; line-height: 1.6;
+    }
+    .pill-label {
+      display: inline-block;
+      background: rgba(108,99,255,0.15); color: var(--primary);
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+      padding: 5px 16px; border-radius: 50px; margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    /* ── SERVICES GRID ── */
+    #services { background: var(--bg2); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 26px; max-width: 1200px; margin: 0 auto;
+    }
+    .service-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 34px 28px;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: all 0.38s cubic-bezier(.22,.68,0,1.2);
+      group: true;
+    }
+    .service-card::before {
+      content:''; position:absolute; inset:0; border-radius:inherit;
+      background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(16,185,129,0.06));
+      opacity:0; transition: opacity 0.35s;
+    }
+    .service-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--primary); box-shadow: var(--shadow); }
+    .service-card:hover::before { opacity:1; }
+    .service-card:active { transform: scale(0.97); }
+
+    .card-icon {
+      width: 64px; height: 64px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin-bottom: 20px;
+      transition: transform 0.3s;
+      position: relative; z-index: 1;
+    }
+    .service-card:hover .card-icon { animation: iconSpin 0.6s ease forwards; }
+    @keyframes iconSpin {
+      0%   { transform: scale(1) rotate(0deg); }
+      40%  { transform: scale(1.18) rotate(180deg); }
+      100% { transform: scale(1.12) rotate(360deg); }
+    }
+    .card-tag {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1px;
+      padding: 3px 10px; border-radius: 50px;
+      display: inline-block; margin-bottom: 10px; text-transform: uppercase;
+      position: relative; z-index:1;
+    }
+    .service-card h3 {
+      font-size: 1.2rem; font-weight: 700; margin-bottom: 10px;
+      position: relative; z-index:1;
+    }
+    .service-card p {
+      color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;
+      position: relative; z-index:1;
+    }
+    .card-arrow {
+      position: absolute; bottom: 24px; right: 24px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(108,99,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; transition: all 0.3s;
+      z-index: 1;
+    }
+    .service-card:hover .card-arrow { background: var(--primary); transform: translateX(3px); }
+
+    /* service colours */
+    .c1 .card-icon { background: rgba(239,68,68,0.15); }   .c1 .card-tag { background:rgba(239,68,68,0.12); color:#f87171; }
+    .c2 .card-icon { background: rgba(245,158,11,0.15); }  .c2 .card-tag { background:rgba(245,158,11,0.12); color:#fbbf24; }
+    .c3 .card-icon { background: rgba(59,130,246,0.15); }  .c3 .card-tag { background:rgba(59,130,246,0.12); color:#60a5fa; }
+    .c4 .card-icon { background: rgba(139,92,246,0.15); }  .c4 .card-tag { background:rgba(139,92,246,0.12); color:#c084fc; }
+    .c5 .card-icon { background: rgba(234,179,8,0.15); }   .c5 .card-tag { background:rgba(234,179,8,0.12); color:#facc15; }
+    .c6 .card-icon { background: rgba(236,72,153,0.15); }  .c6 .card-tag { background:rgba(236,72,153,0.12); color:#f472b6; }
+    .c7 .card-icon { background: rgba(16,185,129,0.15); }  .c7 .card-tag { background:rgba(16,185,129,0.12); color:#34d399; }
+    .c8 .card-icon { background: rgba(249,115,22,0.15); }  .c8 .card-tag { background:rgba(249,115,22,0.12); color:#fb923c; }
+    .c9 .card-icon { background: rgba(108,99,255,0.15); }  .c9 .card-tag { background:rgba(108,99,255,0.12); color:#a5b4fc; }
+
+    /* ── HOW IT WORKS ── */
+    #how { background: var(--bg); }
+    .steps { display: flex; gap: 0; max-width: 900px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+    .step {
+      flex: 1 1 220px; text-align: center; padding: 32px 24px;
+      position: relative;
+    }
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute; top: 54px; right: -1px;
+      width: 2px; height: 44px;
+      background: linear-gradient(to bottom, var(--primary), transparent);
+    }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #10b981);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.3rem;
+      margin: 0 auto 20px;
+      box-shadow: 0 4px 20px rgba(108,99,255,0.35);
+    }
+    .step h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .step p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; }
+
+    /* ── TESTIMONIALS ── */
+    #reviews { background: var(--bg2); }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+    .review-card {
+      background: var(--bg3);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: all 0.3s;
+    }
+    .review-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+    .stars { color: var(--secondary); margin-bottom: 14px; font-size: 1rem; letter-spacing: 2px; }
+    .review-text { color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; margin-bottom: 18px; }
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #10b981);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem;
+    }
+    .reviewer-info strong { display: block; font-size: 0.9rem; }
+    .reviewer-info span { color: var(--text-muted); font-size: 0.8rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      background: var(--bg); border-top: 1px solid var(--border);
+      padding: 60px 60px 36px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-brand p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-top: 12px; max-width: 280px; }
+    footer h5 { font-size: 0.9rem; font-weight: 700; margin-bottom: 18px; color: var(--text); }
+    footer ul { list-style: none; }
+    footer ul li { margin-bottom: 10px; }
+    footer ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+    footer ul li a:hover { color: var(--primary); }
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 24px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+      color: var(--text-muted); font-size: 0.84rem;
+    }
+
+    /* ── MODAL / FORM OVERLAY ── */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(8,8,20,0.85);
+      backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    .modal-backdrop.active { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--bg3);
+      border: 1.5px solid var(--border);
+      border-radius: 24px; width: 100%; max-width: 640px;
+      max-height: 92vh; overflow-y: auto;
+      padding: 0;
+      transform: scale(0.88) translateY(30px);
+      transition: transform 0.4s cubic-bezier(.22,.68,0,1.2);
+      position: relative;
+    }
+    .modal-backdrop.active .modal { transform: scale(1) translateY(0); }
+
+    /* custom scrollbar */
+    .modal::-webkit-scrollbar { width: 4px; }
+    .modal::-webkit-scrollbar-track { background: transparent; }
+    .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .modal-header {
+      padding: 32px 36px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; justify-content: space-between;
+      position: sticky; top: 0; background: var(--bg3); z-index: 2;
+      border-radius: 24px 24px 0 0;
+    }
+    .modal-service-info { display: flex; align-items: center; gap: 16px; }
+    .modal-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+    }
+    .modal-header h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+    .modal-header p { color: var(--text-muted); font-size: 0.84rem; }
+    .close-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: none;
+      color: var(--text-muted); font-size: 1.2rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .close-btn:hover { background: rgba(239,68,68,0.15); color: #f87171; }
+
+    .modal-body { padding: 28px 36px 36px; }
+
+    /* form elements */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group.full { grid-column: span 2; }
+    .form-group label {
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--text-muted); letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+    .form-control {
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(108,99,255,0.2);
+      color: var(--text); border-radius: 12px;
+      padding: 13px 16px; font-size: 0.94rem;
+      font-family: inherit; outline: none;
+      transition: all 0.25s;
+    }
+    .form-control::placeholder { color: rgba(144,144,184,0.55); }
+    .form-control:focus {
+      border-color: var(--primary);
+      background: rgba(108,99,255,0.06);
+      box-shadow: 0 0 0 4px rgba(108,99,255,0.12);
+    }
+    select.form-control { cursor: pointer; }
+    select.form-control option { background: #ffffff; color: #0f172a; }
+    textarea.form-control { resize: vertical; min-height: 100px; }
+
+    .selected-service-badge {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.3);
+      border-radius: 12px; padding: 12px 16px;
+      margin-bottom: 24px;
+    }
+    .selected-service-badge span.label {
+      font-size: 0.78rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .selected-service-badge span.value {
+      font-weight: 700; color: #a5a0ff; font-size: 1rem;
+    }
+
+    .form-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 24px 0; color: var(--text-muted); font-size: 0.82rem;
+    }
+    .form-divider::before, .form-divider::after {
+      content:''; flex:1; height:1px; background: var(--border);
+    }
+
+    .urgency-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .urgency-btn {
+      flex: 1; min-width: 90px;
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(108,99,255,0.2);
+      color: var(--text-muted); border-radius: 10px;
+      padding: 10px 14px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all 0.25s; text-align: center;
+      font-family: inherit;
+    }
+    .urgency-btn.active, .urgency-btn:hover {
+      border-color: var(--primary); color: var(--primary);
+      background: rgba(108,99,255,0.1);
+    }
+
+    .modal-footer {
+      padding: 0 36px 36px;
+      display: flex; gap: 14px;
+    }
+    .btn-cancel {
+      flex: 1; background: rgba(255,255,255,0.04);
+      border: 1.5px solid var(--border); color: var(--text-muted);
+      padding: 14px; border-radius: 12px; font-size: 0.95rem;
+      font-weight: 600; cursor: pointer; transition: all 0.25s; font-family: inherit;
+    }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
+    .btn-submit {
+      flex: 2;
+      background: linear-gradient(135deg, #6c63ff, #4f46e5);
+      color: white; border: none; padding: 14px;
+      border-radius: 12px; font-size: 0.98rem; font-weight: 700;
+      cursor: pointer; transition: all 0.3s; font-family: inherit;
+      box-shadow: 0 4px 20px rgba(108,99,255,0.35);
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,0.5); }
+    .btn-submit:active { transform: scale(0.97); }
+
+    /* ── SUCCESS STATE ── */
+    .success-screen {
+      display: none; flex-direction: column; align-items: center;
+      text-align: center; padding: 60px 36px;
+    }
+    .success-screen.show { display: flex; }
+    .success-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; margin-bottom: 24px;
+      animation: popIn 0.5s cubic-bezier(.22,.68,0,1.2);
+      box-shadow: 0 6px 30px rgba(16,185,129,0.35);
+    }
+    @keyframes popIn {
+      from { transform: scale(0); opacity:0; }
+      to { transform: scale(1); opacity:1; }
+    }
+    .success-screen h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
+    .success-screen p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 340px; }
+    .booking-id {
+      margin: 20px 0;
+      background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25);
+      border-radius: 12px; padding: 14px 28px;
+      font-size: 1.1rem; font-weight: 700; color: #34d399;
+      letter-spacing: 2px;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(36px); transition: all 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 22px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+      transform: translateX(130%); transition: transform 0.45s cubic-bezier(.22,.68,0,1.2);
+      max-width: 340px;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .toast-msg strong { display: block; font-size: 0.9rem; margin-bottom: 2px; }
+    .toast-msg span { color: var(--text-muted); font-size: 0.82rem; }
+
+    /* ── FLOATING PARTICLES ── */
+    .particles { position: fixed; inset:0; z-index:0; pointer-events:none; }
+    .particle {
+      position: absolute; width:3px; height:3px; border-radius:50%;
+      background: rgba(108,99,255,0.5);
+      animation: drift var(--dur) linear infinite;
+      left: var(--x); top: 110%;
+    }
+    @keyframes drift {
+      0% { top:110%; opacity:0; }
+      10% { opacity:1; }
+      90% { opacity:0.6; }
+      100% { top:-5%; opacity:0; }
+    }
+
+    /* ── IMAGE LIGHTBOX ── */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 9998;
+      background: rgba(0,0,0,0.92);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    #lightbox.active { opacity: 1; pointer-events: all; }
+    #lightbox img {
+      max-width: 92vw; max-height: 88vh;
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      transform: scale(0.88); transition: transform 0.3s cubic-bezier(.22,.68,0,1.2);
+    }
+    #lightbox.active img { transform: scale(1); }
+    #lightboxClose {
+      position: absolute; top: 20px; right: 24px;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: none;
+      color: #fff; font-size: 1.3rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    #lightboxClose:hover { background: rgba(239,68,68,0.5); }
+    #lightboxPrev, #lightboxNext {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: none;
+      color: #fff; font-size: 1.6rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    #lightboxPrev { left: 16px; }
+    #lightboxNext { right: 16px; }
+    #lightboxPrev:hover, #lightboxNext:hover { background: rgba(108,99,255,0.5); }
+    #lightboxCounter {
+      position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 600;
+      background: rgba(0,0,0,0.4); padding: 4px 14px; border-radius: 20px;
+    }
+
+    @media(max-width:900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display:none; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width:640px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: span 1; }
+      .modal-header, .modal-body, .modal-footer { padding-left: 22px; padding-right: 22px; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- INTRO VIDEO OVERLAY -->
+<div id="introOverlay" aria-hidden="true">
+  <video id="introVideo" autoplay muted playsinline preload="auto">
+    <source src="assets/Fixipro App Logo_20260528_122845_0000.mp4" type="video/mp4" />
+  </video>
+  <div id="introFallback">Loading…</div>
+</div>
+
+
+<!-- bg orbs -->
+<div class="bg-orbs">
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<!-- particles -->
+<div class="particles" id="particles"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="logo">fixi<span>pro</span></div>
+  <div class="nav-links">
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#how">How it Works</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+    <button class="btn-nav" onclick="scrollToServices()">Book Now</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> Available 24 / 7</div>
+  <h1>Your <span class="grad">All-in-One</span><br>Home Services Hub</h1>
+  <p>From construction to groceries — book trusted professionals at your doorstep in minutes.</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="scrollToServices()">Explore Services ↓</button>
+    <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How it Works</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num" data-count="0">0</div><div class="stat-label">Bookings Completed</div></div>
+    <div class="stat"><div class="stat-num" data-count="100">0</div><div class="stat-label">Expert Professionals</div></div>
+    <div class="stat"><div class="stat-num" data-count="96">0</div><div class="stat-label">% Customer Satisfaction</div></div>
+    <div class="stat"><div class="stat-num" data-count="15">0</div><div class="stat-label">Service Categories</div></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="pill-label" style="display:block;text-align:center">What We Offer</div>
+  <h2 class="section-title">Our <span style="background:linear-gradient(135deg,#6c63ff,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Services</span></h2>
+  <p class="section-sub">Click any service card to instantly book a qualified professional near you.</p>
+  <div class="services-grid">
+
+    <div class="service-card c1 reveal" onclick="openModal('Construction Services','🏗️','Renovations, repairs, extensions & builds','bg1')">
+      <div class="card-icon">🏗️</div>
+      <div class="card-tag">Construction</div>
+      <h3>Construction Services</h3>
+      <p>Renovations, structural repairs, extensions & new builds by trusted pros.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card c7 reveal" onclick="openRentalFlow()">
+      <div class="card-icon">🏠</div>
+      <div class="card-tag">Rental</div>
+      <h3>Home Rental </h3>
+      <p>Browse or post home rentals — find your perfect place to stay.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card c2 reveal" onclick="openModal('Groceries Services','🛒','Fresh produce, pantry items & weekly shopping','bg2')">
+      <div class="card-icon">🛒</div>
+      <div class="card-tag">Groceries</div>
+      <h3>Groceries Services</h3>
+      <p>Same/next-day delivery of fresh produce, dairy, pantry staples & essentials.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card c3 reveal" onclick="openModal('Home Services','🏠','General home support & maintenance','bg3')">
+      <div class="card-icon">🏠</div>
+      <div class="card-tag">Home</div>
+      <h3>Home Services</h3>
+      <p>Trusted helpers for your everyday home tasks and maintenance needs.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card c4 reveal" onclick="openModal('Home Appliances Services','📺','AC, fridge, washing machine & more repair','bg4')">
+      <div class="card-icon">📺</div>
+      <div class="card-tag">Appliances</div>
+      <h3>Home Appliances Services</h3>
+      <p>Repair & maintenance for AC, refrigerators, washing machines, TVs and more.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card c5 reveal" onclick="openModal('Installation Services','🔧','Electrical, plumbing, solar & specialist installations','bg5')">
+      <div class="card-icon">🔧</div>
+      <div class="card-tag">Installation</div>
+      <h3>Installation Services</h3>
+      <p>Expert installation support across plumbing, electrical, solar & related work.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card c6 reveal" onclick="openMeatFlow()">
+      <div class="card-icon">🥩</div>
+      <div class="card-tag">Meat</div>
+      <h3>Meat Services</h3>
+      <p>Fresh, halal & premium meat cuts delivered daily.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card c8 reveal" onclick="openCourierFlow()">
+      <div class="card-icon">🚚</div>
+      <div class="card-tag">Courier</div>
+      <h3>Courier Services</h3>
+      <p>Fast courier delivery for documents, parcels and urgent items.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card c9 reveal" onclick="openFoodFlow()">
+      <div class="card-icon">🍕</div>
+      <div class="card-tag">Food</div>
+      <h3>Food &amp; Beverage</h3>
+      <p>Pizzas, rolls, rice dishes &amp; fresh fruit juices delivered to your door.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+    <div class="service-card reveal" style="background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:34px 28px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.38s;" onclick="openModal('Other Services','🛠️','Custom service requests')">
+      <div class="card-icon">🛠️</div>
+      <div class="card-tag">Other</div>
+      <h3>Other Services</h3>
+      <p>Can’t find what you need? Tell us and we’ll connect you to the right expert.</p>
+      <div class="card-arrow">→</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="pill-label" style="display:block;text-align:center">Simple Steps</div>
+  <h2 class="section-title reveal">How It <span style="background:linear-gradient(135deg,#6c63ff,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Works</span></h2>
+  <p class="section-sub reveal">Booking a service has never been easier.</p>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <h4>Pick a Service</h4>
+      <p>Browse our categories and select the service you need.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">2</div>
+      <h4>Fill the Form</h4>
+      <p>Enter your address, preferred time, and any specific details.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">3</div>
+      <h4>Get Matched</h4>
+      <p>We instantly match you with a verified professional near you.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">4</div>
+      <h4>Job Done ✓</h4>
+      <p>Sit back and relax. Rate your experience after completion.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS PARTNERS -->
+<section id="partners" style="background:var(--bg2);">
+  <div class="pill-label" style="display:block;text-align:center">Business Partners</div>
+  <h2 class="section-title reveal">Trusted <span style="background:linear-gradient(135deg,#6c63ff,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Business</span> & Brands</h2>
+   <br>
+   
+
+   <br>
+   <br>
+   <br>
+   <br>
+  <div class="partners-wrap">
+    <div class="partners-visual reveal">
+      <div class="partner-image">
+        <img src="assets/h.png" alt="Partner highlights" style="width:100%; height:220px; object-fit:contain; border-radius:22px; display:block; margin:0 auto;" />
+      </div>
+  </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    
+
+<!-- CONTACT SECTION -->
+<section id="contact" style="background:var(--bg3); border-top:1px solid var(--border);">
+  <div class="pill-label" style="display:block;text-align:center">Get In Touch</div>
+  <h2 class="section-title reveal">Need <span style="background:linear-gradient(135deg,#6c63ff,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Help?</span></h2>
+  <p class="section-sub reveal">Our support team is available 24/7 to assist you.</p>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;max-width:800px;margin:0 auto;justify-content:center;">
+    <div class="review-card reveal" style="flex:1;min-width:220px;text-align:center;padding:36px 24px;">
+      <div style="font-size:2.4rem;margin-bottom:14px;">📞</div>
+      <h4 style="margin-bottom:8px;">Call Us</h4>
+      <p style="color:var(--text-muted);font-size:0.88rem;">+1 (800) SERVE-NOW</p>
+    </div>
+    <div class="review-card reveal" style="flex:1;min-width:220px;text-align:center;padding:36px 24px;">
+      <div style="font-size:2.4rem;margin-bottom:14px;">💬</div>
+      <h4 style="margin-bottom:8px;">Live Chat</h4>
+      <p style="color:var(--text-muted);font-size:0.88rem;">Chat with an agent instantly</p>
+    </div>
+    <div class="review-card reveal" style="flex:1;min-width:220px;text-align:center;padding:36px 24px;">
+      <div style="font-size:2.4rem;margin-bottom:14px;">✉️</div>
+      <h4 style="margin-bottom:8px;">Email</h4>support@fixipro.app
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">fixi<span>pro</span></div>
+      <p>Your trusted partner for all home services. Professionals at your doorstep, 24/7.</p>
+    </div>
+    <div>
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Building Construction</a></li>
+        <li><a href="#">Electrical</a></li>
+        <li><a href="#">Plumbing</a></li>
+        <li><a href="#">Earthmovers</a></li>
+        <li><a href="#">Solar</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>More Services</h5>
+      <ul>
+        <li><a href="#">Home Appliances</a></li>
+        <li><a href="#">Groceries</a></li>
+        <li><a href="#">Meat Services</a></li>
+        <li><a href="#">Other</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+<span>©️ 2026 Fixipro. All rights reserved.</span>
+    <span>Built with ❤️ for better living</span>
+  </div>
+</footer>
+
+<!-- ════════════════════════ BOOKING MODAL ════════════════════════ -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="modal" id="modal">
+
+    <!-- Main Form -->
+    <div id="formContent">
+      <div class="modal-header">
+        <div class="modal-service-info">
+          <div class="modal-icon" id="modalIcon"></div>
+          <div>
+            <h2 id="modalTitle">Service Booking</h2>
+            <p id="modalSubtitle">Fill in the details below</p>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Selected service badge -->
+        <div class="selected-service-badge">
+          <span>🏷️</span>
+          <div>
+            <span class="label">Selected Service</span><br>
+            <span class="value" id="badgeService">—</span>
+          </div>
+        </div>
+
+        <form id="bookingForm" onsubmit="submitForm(event)">
+          <div class="form-grid">
+
+            <!-- Full Name -->
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" class="form-control" id="fName" placeholder="John Doe" required>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" class="form-control" id="fPhone" placeholder="+1 234 567 8901" required>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" class="form-control" id="fEmail" placeholder="you@example.com">
+            </div>
+
+            <!-- Sub-service -->
+            <div class="form-group">
+              <label>Service Type *</label>
+              <select class="form-control" id="fSubService" required>
+                <option value="" disabled selected>Select sub-service…</option>
+              </select>
+            </div>
+
+            <!-- Address -->
+            <div class="form-group full">
+              <label>Full Address *</label>
+              <input type="text" class="form-control" id="fAddress" placeholder="123 Main Street, City, Province/State" required>
+            </div>
+
+            <!-- Preferred Date -->
+            <div class="form-group">
+              <label>Preferred Date *</label>
+              <input type="date" class="form-control" id="fDate" required>
+            </div>
+
+            <!-- Preferred Time -->
+            <div class="form-group">
+              <label>Preferred Time *</label>
+              <select class="form-control" id="fTime" required>
+                <option value="" disabled selected>Select time…</option>
+                <option>07:00 – 09:00</option>
+                <option>09:00 – 11:00</option>
+                <option>11:00 – 13:00</option>
+                <option>13:00 – 15:00</option>
+                <option>15:00 – 17:00</option>
+                <option>17:00 – 19:00</option>
+                <option>Any Time</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="form-divider">Urgency Level</div>
+
+          <div class="form-group">
+            <label>How urgent is this?</label>
+            <div class="urgency-btns">
+              <button type="button" class="urgency-btn" onclick="setUrgency(this,'Normal')">🟢 Normal</button>
+              <button type="button" class="urgency-btn" onclick="setUrgency(this,'Priority')">🟡 Priority</button>
+              <button type="button" class="urgency-btn" onclick="setUrgency(this,'Emergency')">🔴 Emergency</button>
+            </div>
+            <input type="hidden" id="fUrgency" value="Normal">
+          </div>
+
+          <div class="form-divider">Additional Details</div>
+
+          <div class="form-group full" style="margin-top:0">
+            <label>Description / Special Requirements</label>
+            <textarea class="form-control" id="fDetails" placeholder="Describe the issue or any extra information the professional should know…"></textarea>
+          </div>
+
+          <!-- hidden service field -->
+          <input type="hidden" id="fService">
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit" onclick="submitForm(event)">
+          ✅ &nbsp;Confirm Booking
+        </button>
+      </div>
+    </div>
+
+    <!-- Home Rental -->
+    <div id="rentalContent" style="display:none;">
+      <div class="modal-header">
+        <div class="modal-service-info">
+          <div class="modal-icon">🏠</div>
+          <div><h2>Home Rental</h2><p>Browse listings or post your property</p></div>
+        </div>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Tab switcher -->
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <button type="button" class="btn-submit" id="rtab-browse" style="flex:1;padding:11px;font-size:0.88rem;" onclick="showRentalTab('browse')">&#127968; Browse Listings</button>
+          <button type="button" class="btn-cancel" id="rtab-post" style="flex:1;padding:11px;font-size:0.88rem;" onclick="showRentalTab('post')">&#43; Post Your Home</button>
+        </div>
+
+        <!-- BROWSE TAB -->
+        <div id="rentalBrowseTab">
+          <div id="rentalListings" style="display:flex;flex-direction:column;gap:16px;">
+            <div style="text-align:center;color:var(--text-muted);padding:32px 0;font-size:0.95rem;">No listings yet. Be the first to post your home!</div>
+          </div>
+        </div>
+
+        <!-- POST TAB -->
+        <div id="rentalPostTab" style="display:none;">
+          <div class="form-grid">
+            <div class="form-group full"><label>Property Title *</label><input type="text" class="form-control" id="rTitle" placeholder="e.g. 2BHK Furnished Flat in Koramangala"></div>
+            <div class="form-group"><label>Location / Area *</label><input type="text" class="form-control" id="rLocation" placeholder="e.g. Koramangala, Bangalore"></div>
+            <div class="form-group"><label>Rent per Month (&#8377;) *</label><input type="number" class="form-control" id="rRent" placeholder="e.g. 15000" min="0"></div>
+            <div class="form-group">
+              <label>Property Type *</label>
+              <select class="form-control" id="rType">
+                <option value="" disabled selected>Select type…</option>
+                <option>1 BHK</option><option>2 BHK</option><option>3 BHK</option>
+                <option>Studio</option><option>PG / Hostel</option><option>Villa</option><option>Commercial</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Furnishing</label>
+              <select class="form-control" id="rFurnish">
+                <option value="" disabled selected>Select…</option>
+                <option>Fully Furnished</option><option>Semi Furnished</option><option>Unfurnished</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Available From</label>
+              <input type="date" class="form-control" id="rAvail">
+            </div>
+            <div class="form-group full">
+              <label>Description</label>
+              <textarea class="form-control" id="rDesc" placeholder="Describe amenities, nearby landmarks, rules, etc.…" style="min-height:80px;"></textarea>
+            </div>
+            <div class="form-group full">
+              <label>Property Photos (up to 5)</label>
+              <input type="file" class="form-control" id="rPhotos" accept="image/*" multiple style="padding:10px;cursor:pointer;">
+              <div id="rPhotoPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+            </div>
+            <div class="form-group"><label>Your Name *</label><input type="text" class="form-control" id="rName" placeholder="John Doe"></div>
+            <div class="form-group"><label>Phone Number *</label><input type="tel" class="form-control" id="rPhone" placeholder="+91 234 567 8901"></div>
+          </div>
+          <button type="button" class="btn-submit" style="width:100%;margin-top:18px;padding:14px;" onclick="submitRentalListing()">🏠 Post Listing</button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+
+    <!-- Food & Beverage Cart -->
+    <div id="foodContent" style="display:none;">
+      <div class="modal-header">
+        <div class="modal-service-info">
+          <div class="modal-icon">🍕</div>
+          <div><h2>Food &amp; Beverage</h2><p>Pizzas, Rolls, Rice &amp; Juices</p></div>
+        </div>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="selected-service-badge">
+          <span>🛒</span>
+          <div><span class="label">Cart</span><br><span class="value" id="foodCartSummary">0 items</span></div>
+        </div>
+
+        <!-- Category tabs -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+          <button type="button" class="urgency-btn active" id="ftab-pizza" onclick="showFoodCategory('pizza')">&#127829; Pizza</button>
+          <button type="button" class="urgency-btn" id="ftab-rolls" onclick="showFoodCategory('rolls')">&#127791; Rolls</button>
+          <button type="button" class="urgency-btn" id="ftab-rice" onclick="showFoodCategory('rice')">&#127859; Rice</button>
+          <button type="button" class="urgency-btn" id="ftab-juice" onclick="showFoodCategory('juice')">&#127818; Juice</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="foodItemGrid"></div>
+
+        <div style="margin:20px 0;height:1px;background:var(--border);"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-weight:800;font-size:1rem;">Your Cart</div>
+          <button type="button" class="btn-cancel" style="padding:8px 14px;" onclick="foodClearCart()">Clear</button>
+        </div>
+        <div id="foodCartList"><div style="color:var(--text-muted);font-size:0.9rem;">Cart is empty. Add items above.</div></div>
+
+        <div style="margin-top:20px;height:1px;background:var(--border);"></div>
+        <div style="font-weight:800;font-size:1rem;margin:18px 0 12px;">Your Details</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name *</label><input type="text" class="form-control" id="fbName" placeholder="John Doe"></div>
+          <div class="form-group"><label>Phone Number *</label><input type="tel" class="form-control" id="fbPhone" placeholder="+91 234 567 8901"></div>
+          <div class="form-group"><label>Email</label><input type="email" class="form-control" id="fbEmail" placeholder="you@example.com"></div>
+          <div class="form-group"><label>Preferred Date *</label><input type="date" class="form-control" id="fbDate"></div>
+          <div class="form-group full"><label>Delivery Address *</label><input type="text" class="form-control" id="fbAddress" placeholder="123 Main Street, City"></div>
+          <div class="form-group">
+            <label>Preferred Time *</label>
+            <select class="form-control" id="fbTime">
+              <option value="" disabled selected>Select time…</option>
+              <option>07:00 – 09:00</option><option>09:00 – 11:00</option>
+              <option>11:00 – 13:00</option><option>13:00 – 15:00</option>
+              <option>15:00 – 17:00</option><option>17:00 – 19:00</option>
+              <option>Any Time</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Notes</label><input type="text" class="form-control" id="fbNotes" placeholder="Special instructions…"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit" onclick="submitFoodOrder()">🟢 Place Order</button>
+      </div>
+    </div>
+
+    <!-- Meat Cart -->
+    <div id="meatContent" style="display:none;">
+      <div class="modal-header">
+        <div class="modal-service-info">
+          <div class="modal-icon">🥩</div>
+          <div><h2>Meat Services</h2><p>Fresh, halal &amp; premium cuts</p></div>
+        </div>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="selected-service-badge">
+          <span>🛒</span>
+          <div><span class="label">Cart</span><br><span class="value" id="meatCartSummary">0 items</span></div>
+        </div>
+        <div style="font-weight:800;font-size:1rem;margin-bottom:12px;">Choose Meat Types</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="meatTypeGrid"></div>
+        <div style="margin:20px 0;height:1px;background:var(--border);"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-weight:800;font-size:1rem;">Your Cart</div>
+          <button type="button" class="btn-cancel" style="padding:8px 14px;" onclick="meatClearCart()">Clear</button>
+        </div>
+        <div id="meatCartList"><div style="color:var(--text-muted);font-size:0.9rem;">Cart is empty. Add items above.</div></div>
+        <div style="margin-top:20px;height:1px;background:var(--border);"></div>
+        <div style="font-weight:800;font-size:1rem;margin:18px 0 12px;">Your Details</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name *</label><input type="text" class="form-control" id="mName" placeholder="John Doe"></div>
+          <div class="form-group"><label>Phone Number *</label><input type="tel" class="form-control" id="mPhone" placeholder="+91 234 567 8901"></div>
+          <div class="form-group"><label>Email</label><input type="email" class="form-control" id="mEmail" placeholder="you@example.com"></div>
+          <div class="form-group"><label>Preferred Date *</label><input type="date" class="form-control" id="mDate"></div>
+          <div class="form-group full"><label>Delivery Address *</label><input type="text" class="form-control" id="mAddress" placeholder="123 Main Street, City"></div>
+          <div class="form-group">
+            <label>Preferred Time *</label>
+            <select class="form-control" id="mTime">
+              <option value="" disabled selected>Select time…</option>
+              <option>07:00 – 09:00</option><option>09:00 – 11:00</option>
+              <option>11:00 – 13:00</option><option>13:00 – 15:00</option>
+              <option>15:00 – 17:00</option><option>17:00 – 19:00</option>
+              <option>Any Time</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Notes</label><input type="text" class="form-control" id="mNotes" placeholder="Special instructions…"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit" onclick="submitMeatOrder()">🟢 Place Order</button>
+      </div>
+    </div>
+
+    <!-- Courier Form -->
+    <div id="courierContent" style="display:none;">
+      <div class="modal-header">
+        <div class="modal-service-info">
+          <div class="modal-icon">🚚</div>
+          <div>
+            <h2>Courier Services</h2>
+            <p>Fast delivery for parcels &amp; documents</p>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="courierBody">
+        <div class="selected-service-badge">
+          <span>🚚</span>
+          <div><span class="label">Selected Service</span><br><span class="value">Courier Services</span></div>
+        </div>
+        <div class="form-grid" style="margin-bottom:18px;">
+          <div class="form-group"><label>Full Name *</label><input type="text" class="form-control" id="cName" placeholder="John Doe"></div>
+          <div class="form-group"><label>Phone Number *</label><input type="tel" class="form-control" id="cPhone" placeholder="+91 234 567 8901"></div>
+          <div class="form-group"><label>Email Address</label><input type="email" class="form-control" id="cEmail" placeholder="you@example.com"></div>
+          <div class="form-group">
+            <label>Courier Type *</label>
+            <select class="form-control" id="cSubService">
+              <option value="" disabled selected>Select type…</option>
+              <option>Document Delivery</option>
+              <option>Parcel Delivery</option>
+              <option>Express / Urgent Delivery</option>
+              <option>Office / Bulk Pickup</option>
+              <option>Same-day Courier</option>
+              <option>International Shipping</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-divider">Pickup Location (From)</div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>From Address *</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" class="form-control" id="cFrom" placeholder="Enter pickup address" style="flex:1;">
+            <button type="button" class="btn-submit" style="flex:0 0 auto;padding:10px 14px;font-size:0.85rem;" onclick="openCourierMap('from')">📍 Map</button>
+          </div>
+        </div>
+        <div id="courierFromMapWrap" style="display:none;border-radius:12px;overflow:hidden;margin-bottom:14px;border:1.5px solid rgba(108,99,255,0.3);">
+          <div id="courierFromMap" style="height:220px;width:100%;"></div>
+          <div style="padding:8px 12px;font-size:0.8rem;color:var(--text-muted);">🖱️ Click on map to set pickup point</div>
+        </div>
+        <div class="form-divider">Delivery Location (To)</div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>To Address *</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" class="form-control" id="cTo" placeholder="Enter delivery address" style="flex:1;">
+            <button type="button" class="btn-submit" style="flex:0 0 auto;padding:10px 14px;font-size:0.85rem;" onclick="openCourierMap('to')">📍 Map</button>
+          </div>
+        </div>
+        <div id="courierToMapWrap" style="display:none;border-radius:12px;overflow:hidden;margin-bottom:14px;border:1.5px solid rgba(108,99,255,0.3);">
+          <div id="courierToMap" style="height:220px;width:100%;"></div>
+          <div style="padding:8px 12px;font-size:0.8rem;color:var(--text-muted);">🖱️ Click on map to set delivery point</div>
+        </div>
+        <div class="form-grid" style="margin-top:4px;">
+          <div class="form-group"><label>Preferred Date *</label><input type="date" class="form-control" id="cDate"></div>
+          <div class="form-group">
+            <label>Preferred Time *</label>
+            <select class="form-control" id="cTime">
+              <option value="" disabled selected>Select time…</option>
+              <option>07:00 – 09:00</option><option>09:00 – 11:00</option>
+              <option>11:00 – 13:00</option><option>13:00 – 15:00</option>
+              <option>15:00 – 17:00</option><option>17:00 – 19:00</option>
+              <option>Any Time</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-divider">Urgency Level</div>
+        <div class="form-group" style="margin-bottom:18px;">
+          <label>How urgent is this?</label>
+          <div class="urgency-btns" id="cUrgencyBtns">
+            <button type="button" class="urgency-btn active" onclick="setCourierUrgency(this,'Normal')">🟢 Normal</button>
+            <button type="button" class="urgency-btn" onclick="setCourierUrgency(this,'Priority')">🟡 Priority</button>
+            <button type="button" class="urgency-btn" onclick="setCourierUrgency(this,'Emergency')">🔴 Emergency</button>
+          </div>
+          <input type="hidden" id="cUrgency" value="Normal">
+        </div>
+        <div class="form-group">
+          <label>Package Details / Notes</label>
+          <textarea class="form-control" id="cDetails" placeholder="Package size, weight, special handling…" style="min-height:80px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit" onclick="submitCourierForm()">✅ &nbsp;Confirm Booking</button>
+      </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✅</div>
+      <h3>Booking Confirmed!</h3>
+      <p>Your request has been received. A professional will contact you shortly.</p>
+      <div class="booking-id" id="bookingId">BK-000000</div>
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-top:6px;">Save your booking ID for reference.</p>
+      <button class="btn-cancel" style="margin-top:28px; width:100%; background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.35); color: #ef4444;" onclick="closeModal()"><span aria-hidden="true">🏠</span>&nbsp; Back to Home</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightboxOnBg(event)">
+  <button id="lightboxClose" onclick="closeLightbox()">✕</button>
+  <button id="lightboxPrev" onclick="lightboxNav(-1)">&#8249;</button>
+  <img id="lightboxImg" src="" alt="">
+  <button id="lightboxNext" onclick="lightboxNav(1)">&#8250;</button>
+  <div id="lightboxCounter"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <div class="toast-msg">
+    <strong id="toastTitle">Done!</strong>
+    <span id="toastMsg">Action completed.</span>
+  </div>
+</div>
+
+<!-- ════════════ JAVASCRIPT ════════════ -->
+<script>
+  // ── Services sub-options map ──
+  const subServices = {
+    'Construction Services': ['Renovation / Remodel','Structural Repairs','Extensions','House Builds','Waterproofing','Interior Finishing','Maintenance','Other'],
+    'Groceries Services': ['Fruits & Vegetables','Dairy & Eggs','Bakery','Canned & Pantry','Beverages','Household Essentials','Baby Products','Weekly Shop'],
+    'Home Services': ['Electric Service','Plumber Service','Carpenter Service','Painter','Welding Service','Cleaning Services','Home Repairs','Other'],
+    'Home Appliances Services': ['Air Conditioner','Refrigerator / Fridge','Washing Machine','Dishwasher','Microwave / Oven','TV / Electronics','Geyser / Water Heater','Other'],
+    'Installation Services': ['Electrical Installation','Plumbing Installation','Solar Installation','AC Installation','Appliance Installation','Inverter / Backup Setup','System Upgrade','water installation'],
+    'Meat Services': ['Beef','Chicken','Lamb / Mutton','Pork','Fish & Seafood','Halal Cut','Custom Order','Other'],
+    ' Home Rental Services': ['Tools Rental','Equipment Rental','Vehicle / Trailer Rental','Party / Event Supplies Rental','Handyman Rental','Long-term Rental','Other'],
+    'Courier Services': ['Document Delivery','Parcel Delivery','Express / Urgent Delivery','Office / Bulk Pickup','Same-day Courier','International Shipping','Other'],
+    'Other Services': ['Custom Request','Special Projects','Emergency / On-demand','Bulk Orders','Other — Please Describe'],
+  };
+
+  let activeUrgency = 'Normal';
+
+  function setUrgency(el, val) {
+    document.querySelectorAll('.urgency-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('fUrgency').value = val;
+    activeUrgency = val;
+  }
+
+  function openModal(service, icon, subtitle) {
+    const modal = document.getElementById('modal');
+    const backdrop = document.getElementById('modalBackdrop');
+
+    // reset
+    document.getElementById('formContent').style.display = '';
+    document.getElementById('courierContent').style.display = 'none';
+    document.getElementById('meatContent').style.display = 'none';
+    document.getElementById('foodContent').style.display = 'none';
+    document.getElementById('rentalContent').style.display = 'none';
+    document.getElementById('successScreen').classList.remove('show');
+    document.getElementById('bookingForm').reset();
+    document.querySelectorAll('.urgency-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.urgency-btn').classList.add('active');
+    activeUrgency = 'Normal';
+    document.getElementById('fUrgency').value = 'Normal';
+
+    // set values
+    document.getElementById('modalTitle').textContent = service;
+    document.getElementById('modalSubtitle').textContent = subtitle;
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('badgeService').textContent = service;
+    document.getElementById('fService').value = service;
+
+    // set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('fDate').min = today;
+
+    // populate sub-services
+    const sel = document.getElementById('fSubService');
+    sel.innerHTML = '<option value="" disabled selected>Select sub-service…</option>';
+    (subServices[service] || ['General Service','Other']).forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt; o.textContent = opt;
+      sel.appendChild(o);
+    });
+
+    backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modalBackdrop').classList.remove('active');
+    document.body.style.overflow = '';
+    document.getElementById('courierContent').style.display = 'none';
+    document.getElementById('meatContent').style.display = 'none';
+    document.getElementById('foodContent').style.display = 'none';
+    document.getElementById('rentalContent').style.display = 'none';
+  }
+
+  // ── MEAT FLOW ──
+  const meatTypes = [
+    { name: 'Full Chicken',     price: 280, img: 'assets/Raw_Whole_chicken.jpeg' },
+    { name: 'Boneless Chicken', price: 320, img: 'assets/Fresh_chicken.jpeg' },
+    { name: '½ kg Chicken',     price: 140, img: 'assets/Fresh_chicken.jpeg' },
+    { name: 'Wings',            price: 200, img: 'assets/Raw_chicken_leg_pieces.jpeg' },
+    { name: 'Breast',           price: 260, img: 'assets/Chicken_breast_pieces.jpeg' },
+    { name: 'Thigh',            price: 220, img: 'assets/Raw_chicken_leg_pieces.jpeg' },
+    { name: 'Drumstick',        price: 180, img: 'assets/Raw_chicken_leg_pieces.jpeg' },
+    { name: 'Fish',             price: 350, img: 'assets/Whole_fish.jpeg' },
+    { name: 'Mutton',           price: 650, img: 'assets/Goat_meat_cuts.jpeg' },
+    { name: '½ kg Mutton',      price: 325, img: 'assets/Raw_mutton_pieces.jpeg' },
+
+  ];
+  let meatCart = [];
+
+  function openMeatFlow() {
+    meatCart = [];
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('courierContent').style.display = 'none';
+    document.getElementById('successScreen').classList.remove('show');
+    document.getElementById('meatContent').style.display = '';
+    // reset fields
+    ['mName','mPhone','mEmail','mAddress','mNotes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('mTime').value = '';
+    document.getElementById('mDate').value = '';
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('mDate').min = today;
+    // build type grid
+    document.getElementById('meatTypeGrid').innerHTML = meatTypes.map(t =>
+      `<div style="border:1.5px solid var(--border);border-radius:12px;overflow:hidden;background:rgba(255,255,255,0.03);">
+        <img src="${t.img}" alt="${escapeHtml(t.name)}" style="width:100%;height:100px;object-fit:cover;display:block;">
+        <div style="padding:10px;">
+          <div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;">${escapeHtml(t.name)}</div>
+          <div style="color:#10b981;font-weight:800;font-size:0.9rem;margin-bottom:8px;">&#8377;${t.price}/kg</div>
+          <button type="button" class="btn-submit" style="width:100%;padding:8px;font-size:0.82rem;" onclick="meatAddToCart('${escapeJs(t.name)}')">+ Add to Cart</button>
+        </div>
+      </div>`
+    ).join('');
+    renderMeatCart();
+    document.getElementById('modalBackdrop').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function meatAddToCart(type) {
+    const item = meatTypes.find(t => t.name === type);
+    const found = meatCart.find(i => i.type === type);
+    if (found) found.qty += 1; else meatCart.push({ type, qty: 1, price: item ? item.price : 0 });
+    renderMeatCart();
+    showToast('✅', 'Added', type, '#10b981');
+  }
+
+  function meatClearCart() { meatCart = []; renderMeatCart(); }
+
+  function meatInc(type) { const f = meatCart.find(i=>i.type===type); if(f) f.qty++; renderMeatCart(); }
+  function meatDec(type) {
+    const f = meatCart.find(i=>i.type===type); if(!f) return;
+    f.qty--; if(f.qty<=0) meatCart = meatCart.filter(i=>i.type!==type);
+    renderMeatCart();
+  }
+  function meatRemoveType(type) { meatCart = meatCart.filter(i=>i.type!==type); renderMeatCart(); }
+
+  function renderMeatCart() {
+    const total = meatCart.reduce((a,b)=>a+b.qty,0);
+    const totalPrice = meatCart.reduce((a,b)=>a+(b.price*b.qty),0);
+    const summaryEl = document.getElementById('meatCartSummary');
+    if (summaryEl) summaryEl.textContent = `${total} item${total===1?'':'s'} — ₹${totalPrice}`;
+    const listEl = document.getElementById('meatCartList');
+    if (!listEl) return;
+    if (!meatCart.length) { listEl.innerHTML = '<div style="color:var(--text-muted);font-size:0.9rem;">Cart is empty. Add items above.</div>'; return; }
+    listEl.innerHTML = meatCart.map(item =>
+      `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--border);border-radius:12px;padding:10px 14px;background:rgba(255,255,255,0.03);">
+        <div>
+          <div style="font-weight:700;">${escapeHtml(item.type)}</div>
+          <div style="font-size:0.8rem;color:#10b981;font-weight:600;">&#8377;${item.price} &times; ${item.qty} = &#8377;${item.price*item.qty}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button type="button" class="btn-cancel" style="padding:6px 11px;" onclick="meatDec('${escapeJs(item.type)}')">−</button>
+          <span style="font-weight:800;min-width:24px;text-align:center;">${item.qty}</span>
+          <button type="button" class="btn-cancel" style="padding:6px 11px;" onclick="meatInc('${escapeJs(item.type)}')">+</button>
+          <button type="button" class="btn-cancel" style="padding:6px 11px;color:#f87171;border-color:rgba(239,68,68,0.35);" onclick="meatRemoveType('${escapeJs(item.type)}')">Remove</button>
+        </div>
+      </div>`
+    ).join('') +
+    `<div style="text-align:right;font-weight:800;font-size:1rem;margin-top:10px;color:#10b981;">Total: &#8377;${totalPrice}</div>`;
+  }
+
+  function submitMeatOrder() {
+    const name = document.getElementById('mName').value.trim();
+    const phone = document.getElementById('mPhone').value.trim();
+    const email = document.getElementById('mEmail').value.trim();
+    const address = document.getElementById('mAddress').value.trim();
+    const date = document.getElementById('mDate').value;
+    const time = document.getElementById('mTime').value;
+    const notes = document.getElementById('mNotes').value.trim();
+    const total = meatCart.reduce((a,b)=>a+b.qty,0);
+    if (!name || !phone || !address || !date || !time) {
+      shakeModal();
+      showToast('⚠️','Missing Fields','Please fill all required fields.','#f59e0b');
+      return;
+    }
+    if (total === 0) { showToast('⚠️','Empty Cart','Add at least one item.','#f59e0b'); return; }
+    if (!/^[+\d\s\-()]{7,}$/.test(phone)) { showToast('❌','Invalid Phone','Enter a valid phone number.','#ef4444'); return; }
+    const id = 'BK-' + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('bookingId').textContent = id;
+    const niceDate = new Date(date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    const cartLines = meatCart.map(i=>`  • ${i.type} x${i.qty} = ₹${i.price*i.qty}`).join('\n');
+    const orderTotal = meatCart.reduce((a,b)=>a+(b.price*b.qty),0);
+    const msg =
+`🔔 *NEW MEAT ORDER — Fixipro*
+━━━━━━━━━━━━━━━━━━━━
+🆔 *Order ID:* ${id}
+
+👤 *Name:* ${name}
+📞 *Phone:* ${phone}
+${email?`📧 *Email:* ${email}\n`:''}
+🥩 *Service:* Meat Services
+
+🛒 *Order Items:*
+${cartLines}
+💰 *Total: ₹${orderTotal}*
+
+📍 *Delivery Address:* ${address}
+📅 *Date:* ${niceDate}
+⏰ *Time:* ${time}
+${notes?`\n📝 *Notes:* ${notes}`:''}
+━━━━━━━━━━━━━━━━━━━━
+✅ Please confirm this order.`;
+    window.open('https://wa.me/919110426336?text=' + encodeURIComponent(msg), '_blank');
+    document.getElementById('meatContent').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+    showToast('✅','Order Sent!',`Opening WhatsApp… ID: ${id}`,'#10b981');
+  }
+
+  // ── SUPABASE CONFIG ──
+  const SUPA_URL = 'https://dkbrajemmqoxzyquuzsb.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRrYnJhamVtbXFveHp5cXV1enNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDQ3MTAsImV4cCI6MjA5NTYyMDcxMH0.qgVFFFrYnO1QBfHeXdCRarkfEqOza2BxhdtmEALoxok';
+  const SUPA_HEADERS = { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' };
+
+  async function supaFetch(path, opts = {}) {
+    const res = await fetch(SUPA_URL + path, { ...opts, headers: { ...SUPA_HEADERS, ...(opts.headers || {}) } });
+    return res;
+  }
+
+  async function uploadRentalPhoto(file, listingId, idx) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const path = `${listingId}/${idx}_${Date.now()}.${ext}`;
+    // try upsert so re-uploads don't fail
+    const res = await fetch(`${SUPA_URL}/storage/v1/object/rental-photos/${path}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Content-Type': file.type,
+        'x-upsert': 'true'
+      },
+      body: file
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      console.error('Photo upload failed:', err);
+      return null;
+    }
+    return `${SUPA_URL}/storage/v1/object/public/rental-photos/${path}`;
+  }
+
+  // ── HOME RENTAL FLOW ──
+  let rentalListings = [];
+
+  function openRentalFlow() {
+    ['formContent','courierContent','meatContent','foodContent'].forEach(id => document.getElementById(id).style.display = 'none');
+    document.getElementById('successScreen').classList.remove('show');
+    document.getElementById('rentalContent').style.display = '';
+    showRentalTab('browse');
+    loadRentalListings();
+    document.getElementById('modalBackdrop').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  async function loadRentalListings() {
+    document.getElementById('rentalListings').innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:32px 0;">Loading listings…</div>';
+    const res = await supaFetch('/rest/v1/rental_listings?select=*&order=created_at.desc');
+    if (!res.ok) {
+      document.getElementById('rentalListings').innerHTML = '<div style="text-align:center;color:#f87171;padding:32px 0;">Failed to load listings. Check Supabase setup.</div>';
+      return;
+    }
+    rentalListings = await res.json();
+    renderRentalListings();
+  }
+
+  function showRentalTab(tab) {
+    document.getElementById('rentalBrowseTab').style.display = tab === 'browse' ? '' : 'none';
+    document.getElementById('rentalPostTab').style.display  = tab === 'post'   ? '' : 'none';
+    document.getElementById('rtab-browse').className = tab === 'browse' ? 'btn-submit' : 'btn-cancel';
+    document.getElementById('rtab-post').className   = tab === 'post'   ? 'btn-submit' : 'btn-cancel';
+    document.getElementById('rtab-browse').style.cssText = 'flex:1;padding:11px;font-size:0.88rem;';
+    document.getElementById('rtab-post').style.cssText   = 'flex:1;padding:11px;font-size:0.88rem;';
+    if (tab === 'post') {
+      ['rTitle','rLocation','rRent','rDesc','rName','rPhone'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('rType').value = '';
+      document.getElementById('rFurnish').value = '';
+      document.getElementById('rAvail').value = '';
+      document.getElementById('rPhotos').value = '';
+      document.getElementById('rPhotoPreview').innerHTML = '';
+    }
+  }
+
+  document.addEventListener('change', function(e) {
+    if (e.target.id !== 'rPhotos') return;
+    const preview = document.getElementById('rPhotoPreview');
+    preview.innerHTML = '';
+    Array.from(e.target.files).slice(0, 5).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const img = document.createElement('img');
+        img.src = ev.target.result;
+        img.style.cssText = 'width:80px;height:60px;object-fit:cover;border-radius:8px;border:1.5px solid var(--border);cursor:pointer;';
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  async function submitRentalListing() {
+    const title    = document.getElementById('rTitle').value.trim();
+    const location = document.getElementById('rLocation').value.trim();
+    const rent     = document.getElementById('rRent').value.trim();
+    const type     = document.getElementById('rType').value;
+    const furnish  = document.getElementById('rFurnish').value;
+    const avail    = document.getElementById('rAvail').value;
+    const desc     = document.getElementById('rDesc').value.trim();
+    const name     = document.getElementById('rName').value.trim();
+    const phone    = document.getElementById('rPhone').value.trim();
+    const photoFiles = Array.from(document.getElementById('rPhotos').files).slice(0, 5);
+
+    if (!title || !location || !rent || !type || !name || !phone) {
+      shakeModal();
+      showToast('⚠️', 'Missing Fields', 'Please fill all required fields.', '#f59e0b');
+      return;
+    }
+    if (!/^[+\d\s\-()]{7,}$/.test(phone)) {
+      showToast('❌', 'Invalid Phone', 'Enter a valid phone number.', '#ef4444');
+      return;
+    }
+
+    const postBtn = document.querySelector('#rentalPostTab .btn-submit');
+    postBtn.textContent = 'Uploading…'; postBtn.disabled = true;
+
+    // 1. Insert listing first to get the ID
+    const insertRes = await supaFetch('/rest/v1/rental_listings', {
+      method: 'POST',
+      headers: { ...SUPA_HEADERS, 'Prefer': 'return=representation' },
+      body: JSON.stringify({ title, location, rent: parseInt(rent), type, furnish: furnish||null, avail: avail||null, description: desc, owner_name: name, phone, photos: [] })
+    });
+
+    if (!insertRes.ok) {
+      showToast('❌', 'Error', 'Failed to save listing. Check Supabase table setup.', '#ef4444');
+      postBtn.textContent = '🏠 Post Listing'; postBtn.disabled = false;
+      return;
+    }
+
+    const [listing] = await insertRes.json();
+
+    // 2. Upload photos
+    const photoUrls = [];
+    for (let i = 0; i < photoFiles.length; i++) {
+      postBtn.textContent = `Uploading photo ${i+1}/${photoFiles.length}…`;
+      const url = await uploadRentalPhoto(photoFiles[i], listing.id, i);
+      if (url) photoUrls.push(url);
+      else showToast('⚠️', `Photo ${i+1} failed`, 'Skipped — check bucket policy.', '#f59e0b');
+    }
+
+    // 3. Update listing with photo URLs
+    if (photoUrls.length) {
+      await supaFetch(`/rest/v1/rental_listings?id=eq.${listing.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ photos: photoUrls })
+      });
+    }
+
+    postBtn.textContent = '🏠 Post Listing'; postBtn.disabled = false;
+    showToast('🏠', 'Listed!', `${title} is now live on all devices.`, '#6c63ff');
+    showRentalTab('browse');
+    loadRentalListings();
+  }
+
+  async function removeRentalListing(id, ownerPhone) {
+    const entered = prompt('Enter your registered phone number to remove this listing:');
+    if (entered === null) return;
+    if (entered.trim() !== ownerPhone.trim()) {
+      showToast('❌', 'Access Denied', 'Phone number does not match. Only the owner can remove this listing.', '#ef4444');
+      return;
+    }
+    const res = await supaFetch(`/rest/v1/rental_listings?id=eq.${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      showToast('🗑️', 'Removed', 'Your listing has been removed.', '#10b981');
+      loadRentalListings();
+    } else {
+      showToast('❌', 'Error', 'Could not remove listing.', '#ef4444');
+    }
+  }
+
+  function renderRentalListings() {
+    const container = document.getElementById('rentalListings');
+    if (!rentalListings.length) {
+      container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:32px 0;font-size:0.95rem;">No listings yet. Be the first to post your home!</div>';
+      return;
+    }
+    container.innerHTML = rentalListings.map(l => {
+      const photos = l.photos || [];
+      const photosHtml = photos.length
+        ? `<div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px;">${photos.map((p,i) => `<img src="${p}" data-photos='${JSON.stringify(photos)}' data-idx="${i}" onclick="openLightbox(JSON.parse(this.dataset.photos), ${i})" style="height:110px;min-width:150px;object-fit:cover;border-radius:10px;flex-shrink:0;border:1.5px solid var(--border);cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">`).join('')}</div>`
+        : `<div style="height:90px;background:var(--bg2);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;margin-bottom:12px;">🏠</div>`;
+      const niceAvail = l.avail ? new Date(l.avail).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : 'Immediately';
+      return `
+        <div style="border:1.5px solid var(--border);border-radius:14px;overflow:hidden;background:rgba(255,255,255,0.04);">
+          ${photosHtml}
+          <div style="padding:14px 16px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px;">
+              <div style="font-weight:800;font-size:1rem;">${escapeHtml(l.title)}</div>
+              <div style="font-weight:800;color:#10b981;font-size:1rem;white-space:nowrap;">₹${l.rent.toLocaleString()}<span style="font-size:0.75rem;font-weight:500;color:var(--text-muted);">/mo</span></div>
+            </div>
+            <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:6px;">📍 ${escapeHtml(l.location)}</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+              <span style="background:rgba(108,99,255,0.12);color:var(--primary);border-radius:20px;padding:3px 10px;font-size:0.78rem;font-weight:600;">${escapeHtml(l.type)}</span>
+              ${l.furnish ? `<span style="background:rgba(16,185,129,0.12);color:#10b981;border-radius:20px;padding:3px 10px;font-size:0.78rem;font-weight:600;">${escapeHtml(l.furnish)}</span>` : ''}
+              <span style="background:rgba(245,158,11,0.12);color:#f59e0b;border-radius:20px;padding:3px 10px;font-size:0.78rem;font-weight:600;">From ${niceAvail}</span>
+            </div>
+            ${l.description ? `<div style="font-size:0.84rem;color:var(--text-muted);margin-bottom:10px;line-height:1.5;">${escapeHtml(l.description)}</div>` : ''}
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <div style="font-size:0.82rem;color:var(--text-muted);">Owner: <strong>${escapeHtml(l.owner_name)}</strong></div>
+              <div style="font-size:0.82rem;font-weight:700;color:var(--primary);">📞 ${escapeHtml(l.phone)}</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+              <a href="tel:${escapeHtml(l.phone)}" style="flex:1;text-align:center;background:linear-gradient(135deg,#6c63ff,#4f46e5);color:#fff;border-radius:8px;padding:9px 10px;font-size:0.82rem;font-weight:700;text-decoration:none;">📞 Call</a>
+              <a href="https://wa.me/${escapeHtml(l.phone.replace(/[^\d]/g,''))}?text=${encodeURIComponent('Hi, I saw your rental listing "'+l.title+'" on Fixipro. Is it still available?')}" target="_blank" style="flex:1;text-align:center;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border-radius:8px;padding:9px 10px;font-size:0.82rem;font-weight:700;text-decoration:none;">💬 WhatsApp</a>
+              <button type="button" onclick="removeRentalListing('${escapeJs(l.id)}','${escapeJs(l.phone)}')" style="flex:1;background:rgba(239,68,68,0.08);border:1.5px solid rgba(239,68,68,0.3);color:#f87171;border-radius:8px;padding:9px 10px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;">🗑️ Remove</button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── FOOD & BEVERAGE FLOW ──
+  const foodItems = {
+    pizza: [
+      { name: 'Cheesy Pizza',        price: 199, img: 'assets/Cheesy_pizza.jpeg' },
+      { name: 'Burger',              price: 149, img: 'assets/Burger.jpeg' },
+      { name: 'French Fries',        price: 89,  img: 'assets/French_fries.jpeg' },
+      { name: 'Samosas',             price: 49,  img: 'assets/Samosas.jpeg' },
+    ],
+    rolls: [
+      { name: 'Spicy Chicken Roll',  price: 89,  img: 'assets/Spicy_chicken_roll.jpeg' },
+      { name: 'Paneer Roll',         price: 79,  img: 'assets/Paneer_roll.jpeg' },
+      { name: 'Veg Roll',            price: 59,  img: 'assets/Veg_roll.jpeg' },
+      { name: 'Veg Sandwich',        price: 69,  img: 'assets/Vegetable_sandwich.jpeg' },
+    ],
+    rice: [
+      { name: 'Chicken Fried Rice',  price: 179, img: 'assets/Chicken_friedrice.jpeg' },
+      { name: 'Egg Rice',            price: 149, img: 'assets/Egg_rice.jpeg' },
+      { name: 'Gobi Manchurian',     price: 129, img: 'assets/Gobi_Manchurian.jpeg' },
+      { name: 'Masala Puri',         price: 99,  img: 'assets/Masala_Puri.jpeg' },
+    ],
+    juice: [
+      { name: 'Mango Juice',         price: 59,  img: 'assets/Mango_juice.jpeg' },
+      { name: 'Watermelon Juice',    price: 49,  img: 'assets/Watermelon_juice.jpeg' },
+      { name: 'Mixed Fruit Juice',   price: 69,  img: 'assets/Mixed_fruit_juice.jpeg' },
+      { name: 'Pani Puri',           price: 39,  img: 'assets/Pani_puri.jpeg' },
+    ],
+  };
+  let foodCart = [];
+  let activeFoodCategory = 'pizza';
+
+  function openFoodFlow() {
+    foodCart = [];
+    activeFoodCategory = 'pizza';
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('courierContent').style.display = 'none';
+    document.getElementById('meatContent').style.display = 'none';
+    document.getElementById('successScreen').classList.remove('show');
+    document.getElementById('foodContent').style.display = '';
+    ['fbName','fbPhone','fbEmail','fbAddress','fbNotes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fbTime').value = '';
+    document.getElementById('fbDate').value = '';
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('fbDate').min = today;
+    showFoodCategory('pizza');
+    renderFoodCart();
+    document.getElementById('modalBackdrop').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showFoodCategory(cat) {
+    activeFoodCategory = cat;
+    ['pizza','rolls','rice','juice'].forEach(c => {
+      document.getElementById('ftab-'+c).classList.toggle('active', c === cat);
+    });
+    document.getElementById('foodItemGrid').innerHTML = foodItems[cat].map(t =>
+      `<div style="border:1.5px solid var(--border);border-radius:12px;overflow:hidden;background:rgba(255,255,255,0.03);">
+        <img src="${t.img}" alt="${escapeHtml(t.name)}" style="width:100%;height:100px;object-fit:cover;display:block;" onerror="this.src='https://via.placeholder.com/320x100?text=Food'">
+        <div style="padding:10px;">
+          <div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;">${escapeHtml(t.name)}</div>
+          <div style="color:#f59e0b;font-weight:800;font-size:0.9rem;margin-bottom:8px;">&#8377;${t.price}</div>
+          <button type="button" class="btn-submit" style="width:100%;padding:8px;font-size:0.82rem;" onclick="foodAddToCart('${escapeJs(t.name)}')">+ Add to Cart</button>
+        </div>
+      </div>`
+    ).join('');
+  }
+
+  function foodAddToCart(name) {
+    const allItems = Object.values(foodItems).flat();
+    const item = allItems.find(t => t.name === name);
+    const found = foodCart.find(i => i.name === name);
+    if (found) found.qty += 1; else foodCart.push({ name, qty: 1, price: item ? item.price : 0 });
+    renderFoodCart();
+    showToast('✅', 'Added', name, '#f59e0b');
+  }
+
+  function foodClearCart() { foodCart = []; renderFoodCart(); }
+  function foodInc(name) { const f = foodCart.find(i=>i.name===name); if(f) f.qty++; renderFoodCart(); }
+  function foodDec(name) {
+    const f = foodCart.find(i=>i.name===name); if(!f) return;
+    f.qty--; if(f.qty<=0) foodCart = foodCart.filter(i=>i.name!==name);
+    renderFoodCart();
+  }
+  function foodRemove(name) { foodCart = foodCart.filter(i=>i.name!==name); renderFoodCart(); }
+
+  function renderFoodCart() {
+    const total = foodCart.reduce((a,b)=>a+b.qty,0);
+    const totalPrice = foodCart.reduce((a,b)=>a+(b.price*b.qty),0);
+    const summaryEl = document.getElementById('foodCartSummary');
+    if (summaryEl) summaryEl.textContent = `${total} item${total===1?'':'s'} — ₹${totalPrice}`;
+    const listEl = document.getElementById('foodCartList');
+    if (!listEl) return;
+    if (!foodCart.length) { listEl.innerHTML = '<div style="color:var(--text-muted);font-size:0.9rem;">Cart is empty. Add items above.</div>'; return; }
+    listEl.innerHTML = foodCart.map(item =>
+      `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--border);border-radius:12px;padding:10px 14px;background:rgba(255,255,255,0.03);">
+        <div>
+          <div style="font-weight:700;font-size:0.88rem;">${escapeHtml(item.name)}</div>
+          <div style="font-size:0.8rem;color:#f59e0b;font-weight:600;">&#8377;${item.price} &times; ${item.qty} = &#8377;${item.price*item.qty}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button type="button" class="btn-cancel" style="padding:6px 10px;" onclick="foodDec('${escapeJs(item.name)}')">−</button>
+          <span style="font-weight:800;min-width:22px;text-align:center;">${item.qty}</span>
+          <button type="button" class="btn-cancel" style="padding:6px 10px;" onclick="foodInc('${escapeJs(item.name)}')">+</button>
+          <button type="button" class="btn-cancel" style="padding:6px 10px;color:#f87171;border-color:rgba(239,68,68,0.35);" onclick="foodRemove('${escapeJs(item.name)}')">Remove</button>
+        </div>
+      </div>`
+    ).join('') +
+    `<div style="text-align:right;font-weight:800;font-size:1rem;margin-top:10px;color:#f59e0b;">Total: &#8377;${totalPrice}</div>`;
+  }
+
+  function submitFoodOrder() {
+    const name = document.getElementById('fbName').value.trim();
+    const phone = document.getElementById('fbPhone').value.trim();
+    const email = document.getElementById('fbEmail').value.trim();
+    const address = document.getElementById('fbAddress').value.trim();
+    const date = document.getElementById('fbDate').value;
+    const time = document.getElementById('fbTime').value;
+    const notes = document.getElementById('fbNotes').value.trim();
+    const total = foodCart.reduce((a,b)=>a+b.qty,0);
+    if (!name || !phone || !address || !date || !time) {
+      shakeModal();
+      showToast('⚠️','Missing Fields','Please fill all required fields.','#f59e0b');
+      return;
+    }
+    if (total === 0) { showToast('⚠️','Empty Cart','Add at least one item.','#f59e0b'); return; }
+    if (!/^[+\d\s\-()]{7,}$/.test(phone)) { showToast('❌','Invalid Phone','Enter a valid phone number.','#ef4444'); return; }
+    const id = 'BK-' + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('bookingId').textContent = id;
+    const niceDate = new Date(date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    const cartLines = foodCart.map(i=>`  • ${i.name} x${i.qty} = ₹${i.price*i.qty}`).join('\n');
+    const orderTotal = foodCart.reduce((a,b)=>a+(b.price*b.qty),0);
+    const msg =
+`🔔 *NEW FOOD ORDER — Fixipro*
+━━━━━━━━━━━━━━━━━━━━
+🆔 *Order ID:* ${id}
+
+👤 *Name:* ${name}
+📞 *Phone:* ${phone}
+${email?`📧 *Email:* ${email}\n`:''}
+🍕 *Service:* Food & Beverage
+
+🛒 *Order Items:*
+${cartLines}
+💰 *Total: ₹${orderTotal}*
+
+📍 *Delivery Address:* ${address}
+📅 *Date:* ${niceDate}
+⏰ *Time:* ${time}
+${notes?`\n📝 *Notes:* ${notes}`:''}
+━━━━━━━━━━━━━━━━━━━━
+✅ Please confirm this order.`;
+    window.open('https://wa.me/919110426336?text=' + encodeURIComponent(msg), '_blank');
+    document.getElementById('foodContent').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+    showToast('✅','Order Sent!',`Opening WhatsApp… ID: ${id}`,'#10b981');
+  }
+
+  // ── COURIER FLOW ──
+  let courierFromMap = null, courierToMap = null;
+
+  function openCourierFlow() {
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('successScreen').classList.remove('show');
+    document.getElementById('courierContent').style.display = '';
+    // reset fields
+    ['cName','cPhone','cEmail','cFrom','cTo','cDetails'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('cSubService').value = '';
+    document.getElementById('cTime').value = '';
+    document.getElementById('cUrgency').value = 'Normal';
+    document.querySelectorAll('#cUrgencyBtns .urgency-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+    document.getElementById('courierFromMapWrap').style.display = 'none';
+    document.getElementById('courierToMapWrap').style.display = 'none';
+    courierFromMap = null; courierToMap = null;
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('cDate').min = today;
+    document.getElementById('cDate').value = '';
+    document.getElementById('modalBackdrop').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    // load Leaflet if needed
+    if (!window.L) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      document.head.appendChild(s);
+    }
+  }
+
+  function setCourierUrgency(el, val) {
+    document.querySelectorAll('#cUrgencyBtns .urgency-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('cUrgency').value = val;
+  }
+
+  function openCourierMap(mode) {
+    const wrap = document.getElementById(mode === 'from' ? 'courierFromMapWrap' : 'courierToMapWrap');
+    const isOpen = wrap.style.display !== 'none';
+    wrap.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) initCourierMap(mode);
+  }
+
+  function initCourierMap(mode) {
+    const wait = cb => window.L ? cb() : setTimeout(() => wait(cb), 150);
+    wait(() => {
+      const id = mode === 'from' ? 'courierFromMap' : 'courierToMap';
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el._leaflet_id) { el._leaflet_id = null; el.innerHTML = ''; }
+      const map = L.map(id).setView([20.5937, 78.9629], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+      let marker = null;
+      map.on('click', async e => {
+        const { lat, lng } = e.latlng;
+        if (marker) marker.setLatLng([lat, lng]); else marker = L.marker([lat, lng]).addTo(map);
+        try {
+          const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+          const d = await r.json();
+          const addr = d.display_name || `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+          document.getElementById(mode === 'from' ? 'cFrom' : 'cTo').value = addr;
+          showToast('📍', mode === 'from' ? 'Pickup set' : 'Delivery set', addr.substring(0,60), '#6c63ff');
+        } catch { document.getElementById(mode === 'from' ? 'cFrom' : 'cTo').value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`; }
+      });
+      if (mode === 'from') courierFromMap = map; else courierToMap = map;
+      setTimeout(() => map.invalidateSize(), 200);
+    });
+  }
+
+  function submitCourierForm() {
+    const name = document.getElementById('cName').value.trim();
+    const phone = document.getElementById('cPhone').value.trim();
+    const email = document.getElementById('cEmail').value.trim();
+    const sub = document.getElementById('cSubService').value;
+    const from = document.getElementById('cFrom').value.trim();
+    const to = document.getElementById('cTo').value.trim();
+    const date = document.getElementById('cDate').value;
+    const time = document.getElementById('cTime').value;
+    const urgency = document.getElementById('cUrgency').value;
+    const details = document.getElementById('cDetails').value.trim();
+    if (!name || !phone || !sub || !from || !to || !date || !time) {
+      shakeModal();
+      showToast('⚠️','Missing Fields','Please fill all required fields.','#f59e0b');
+      return;
+    }
+    if (!/^[+\d\s\-()]{7,}$/.test(phone)) {
+      showToast('❌','Invalid Phone','Please enter a valid phone number.','#ef4444');
+      return;
+    }
+    const id = 'BK-' + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('bookingId').textContent = id;
+    const niceDate = new Date(date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    const msg =
+`🔔 *NEW BOOKING — Fixipro*
+━━━━━━━━━━━━━━━━━━━━
+🆔 *Booking ID:* ${id}
+
+👤 *Customer Name:* ${name}
+📞 *Phone:* ${phone}
+${email ? `📧 *Email:* ${email}\n` : ''}
+🚚 *Service:* Courier Services
+🔹 *Type:* ${sub}
+
+📦 *Pickup (From):* ${from}
+🏁 *Delivery (To):* ${to}
+
+📅 *Date:* ${niceDate}
+⏰ *Time Slot:* ${time}
+🚨 *Urgency:* ${urgency}
+
+📝 *Details:*
+${details || 'No additional details provided.'}
+━━━━━━━━━━━━━━━━━━━━
+✅ Please confirm this booking.`;
+    window.open('https://wa.me/919110426336?text=' + encodeURIComponent(msg), '_blank');
+    document.getElementById('courierContent').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+    showToast('✅','Booking Sent!',`Opening WhatsApp… ID: ${id}`,'#10b981');
+  }
+
+  // small escaping helpers for injected onclick strings / innerHTML
+  function escapeHtml(str) {
+    return String(str)
+      .replaceAll('&','&amp;')
+      .replaceAll('<','<')
+      .replaceAll('>','>')
+      .replaceAll('"','"')
+      .replaceAll("'",'&#039;');
+  }
+
+  function escapeJs(str) {
+    return String(str).replaceAll('\\','\\\\').replaceAll("'","\\'");
+  }
+
+
+  function handleBackdropClick(e) {
+    if (e.target === document.getElementById('modalBackdrop')) closeModal();
+  }
+
+  function submitForm(e) {
+    if (e) e.preventDefault();
+
+    // basic validation
+    const name    = document.getElementById('fName').value.trim();
+    const phone   = document.getElementById('fPhone').value.trim();
+    const email   = document.getElementById('fEmail').value.trim();
+    const address = document.getElementById('fAddress').value.trim();
+    const service = document.getElementById('fService').value;
+    const sub     = document.getElementById('fSubService').value;
+    const date    = document.getElementById('fDate').value;
+    const time    = document.getElementById('fTime').value;
+    const urgency = document.getElementById('fUrgency').value;
+    const details = document.getElementById('fDetails').value.trim();
+
+    if (!name || !phone || !address || !sub || !date || !time) {
+      shakeModal();
+      showToast('⚠️','Missing Fields','Please fill all required fields.', '#f59e0b');
+      return;
+    }
+
+    if (!/^[+\d\s\-()]{7,}$/.test(phone)) {
+      showToast('❌','Invalid Phone','Please enter a valid phone number.', '#ef4444');
+      return;
+    }
+
+    // generate booking ID
+    const id = 'BK-' + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('bookingId').textContent = id;
+
+    // format date nicely
+    const niceDate = date ? new Date(date).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) : '—';
+
+    // build WhatsApp message
+const msg =
+`🔔 *NEW BOOKING — Fixipro*
+━━━━━━━━━━━━━━━━━━━━
+🆔 *Booking ID:* ${id}
+
+👤 *Customer Name:* ${name}
+📞 *Phone:* ${phone}
+${email ? `📧 *Email:* ${email}\n` : ''}
+🛠️ *Service:* ${service}
+🔹 *Sub-Service:* ${sub}
+📍 *Address:* ${address}
+
+📅 *Date:* ${niceDate}
+⏰ *Time Slot:* ${time}
+🚨 *Urgency:* ${urgency}
+
+📝 *Details:*
+${details || 'No additional details provided.'}
+━━━━━━━━━━━━━━━━━━━━
+✅ Please confirm this booking.`;
+
+    // open WhatsApp
+const waURL = 'https://wa.me/919110426336?text=' + encodeURIComponent(msg);
+    window.open(waURL, '_blank');
+
+    // show success screen
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+
+    showToast('✅','Booking Sent!', `Opening WhatsApp… ID: ${id}`, '#10b981');
+  }
+
+  function shakeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.animation = 'none';
+    modal.style.transform = 'translateX(-10px)';
+    setTimeout(() => modal.style.transform = 'translateX(10px)', 80);
+    setTimeout(() => modal.style.transform = 'translateX(-6px)', 160);
+    setTimeout(() => modal.style.transform = 'translateX(6px)', 240);
+    setTimeout(() => modal.style.transform = 'translateX(0)', 320);
+  }
+
+  // ── TOAST ──
+  function showToast(icon, title, msg, color) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastIcon').textContent = icon;
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastTitle').style.color = color || '#fff';
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+
+  // ── SCROLL-REVEAL ──
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ── COUNTER ANIMATION ──
+  function animateCounter(el) {
+    const target = +el.dataset.count;
+    const suffix = target >= 10000 ? '+' : (el.dataset.count === '98' ? '%' : '+');
+    const dur = 1800;
+    const start = performance.now();
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / dur, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(ease * target).toLocaleString() + (progress >= 1 ? suffix : '');
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounter(e.target);
+        counterObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat-num').forEach(el => counterObs.observe(el));
+
+  // ── NAVBAR SCROLL EFFECT ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.boxShadow =
+      window.scrollY > 40 ? '0 4px 40px rgba(0,0,0,0.5)' : 'none';
+  });
+
+  // ── SCROLL TO SERVICES ──
+  function scrollToServices() {
+    document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── PARTICLES ──
+  const particleContainer = document.getElementById('particles');
+  for (let i = 0; i < 28; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      --x: ${Math.random() * 100}%;
+      --dur: ${6 + Math.random() * 14}s;
+      animation-delay: ${-Math.random() * 16}s;
+      width: ${2 + Math.random() * 3}px;
+      height: ${2 + Math.random() * 3}px;
+      opacity: ${0.2 + Math.random() * 0.5};
+    `;
+    particleContainer.appendChild(p);
+  }
+
+  // ── LIGHTBOX ──
+  let _lbPhotos = [], _lbIdx = 0;
+  function openLightbox(photos, idx) {
+    _lbPhotos = photos; _lbIdx = idx;
+    document.getElementById('lightboxImg').src = photos[idx];
+    document.getElementById('lightboxCounter').textContent = `${idx+1} / ${photos.length}`;
+    document.getElementById('lightboxPrev').style.display = photos.length > 1 ? 'flex' : 'none';
+    document.getElementById('lightboxNext').style.display = photos.length > 1 ? 'flex' : 'none';
+    document.getElementById('lightbox').classList.add('active');
+  }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
+  function closeLightboxOnBg(e) { if (e.target.id === 'lightbox') closeLightbox(); }
+  function lightboxNav(dir) {
+    _lbIdx = (_lbIdx + dir + _lbPhotos.length) % _lbPhotos.length;
+    document.getElementById('lightboxImg').src = _lbPhotos[_lbIdx];
+    document.getElementById('lightboxCounter').textContent = `${_lbIdx+1} / ${_lbPhotos.length}`;
+  }
+
+  // ── ESC key ──
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('lightbox').classList.contains('active')) closeLightbox();
+      else closeModal();
+    }
+    if (e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('active')) lightboxNav(1);
+    if (e.key === 'ArrowLeft'  && document.getElementById('lightbox').classList.contains('active')) lightboxNav(-1);
+  });
+
+  // ── INTRO VIDEO ──
+  (function initIntroVideo() {
+    const overlay = document.getElementById('introOverlay');
+    const video = document.getElementById('introVideo');
+    if (!overlay || !video) return;
+
+    let done = false;
+    const hide = () => {
+      if (done) return;
+      done = true;
+      overlay.classList.add('hidden');
+      overlay.setAttribute('aria-hidden', 'true');
+      // remove from layout after fade
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 650);
+    };
+
+    const fallbackMs = 1800;
+
+    const t = setTimeout(hide, fallbackMs);
+
+    video.addEventListener('ended', () => {
+      clearTimeout(t);
+      hide();
+    });
+
+    // Attempt autoplay. Some browsers may block; fallback will still hide.
+    const tryPlay = async () => {
+      try {
+        await video.play();
+        // If metadata is loaded very quickly and video is already at end, handle it.
+        if (video.ended) {
+          clearTimeout(t);
+          hide();
+        }
+      } catch (e) {
+        // Ignore - fallback timeout will hide overlay.
+      }
+    };
+
+    // Start as soon as possible
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', tryPlay, { once: true });
+    } else {
+      tryPlay();
+    }
+  })();
+</script>
+</body>
+</html>
