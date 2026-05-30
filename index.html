@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -10,21 +10,21 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-      --primary: #6c63ff;
-      --primary-dark: #4f46e5;
-      --secondary: #f59e0b;
-      --accent: #10b981;
+      --primary: #00796b;
+      --primary-dark: #004d40;
+      --secondary: #26c6da;
+      --accent: #00acc1;
       --danger: #ef4444;
 
-      /* White / light UI */
-      --bg: #ffffff;
-      --bg2: #f6f7fb;
-      --bg3: #eef1f7;
-      --card: #ffffff;
+      /* Light peacock UI */
+      --bg: #e0f2f1;
+      --bg2: #b2dfdb;
+      --bg3: #80cbc4;
+      --card: #f0fafa;
 
-      --text: #0f172a;
-      --text-muted: #475569;
-      --border: rgba(2, 6, 23, 0.10);
+      --text: #002b36;
+      --text-muted: #2e6b6b;
+      --border: rgba(0, 121, 107, 0.15);
 
       --radius: 18px;
       --shadow: 0 8px 40px rgba(2,6,23,0.10);
@@ -34,7 +34,7 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--bg);
+      background: linear-gradient(160deg, #b2dfdb 0%, #e0f2f1 40%, #80deea 70%, #e0f7fa 100%);
       color: var(--text);
       overflow-x: hidden;
       min-height: 100vh;
@@ -52,9 +52,9 @@
       position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.18;
       animation: float 12s ease-in-out infinite alternate;
     }
-    .orb1 { width:500px; height:500px; background:#6c63ff; top:-120px; left:-100px; animation-delay:0s; }
-    .orb2 { width:400px; height:400px; background:#10b981; top:40%; right:-120px; animation-delay:-4s; }
-    .orb3 { width:350px; height:350px; background:#f59e0b; bottom:-100px; left:30%; animation-delay:-6s; }
+    .orb1 { width:500px; height:500px; background:#00796b; top:-120px; left:-100px; animation-delay:0s; }
+    .orb2 { width:400px; height:400px; background:#26c6da; top:40%; right:-120px; animation-delay:-4s; }
+    .orb3 { width:350px; height:350px; background:#80deea; bottom:-100px; left:30%; animation-delay:-6s; }
     @keyframes float {
       0% { transform: translateY(0) scale(1); }
       100% { transform: translateY(40px) scale(1.06); }
@@ -65,7 +65,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 18px 60px;
-      background: rgba(179, 225, 245, 0.7);
+      background: rgba(178, 223, 219, 0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       transition: all 0.4s;
@@ -265,7 +265,7 @@
     .c9 .card-icon { background: rgba(108,99,255,0.15); }  .c9 .card-tag { background:rgba(108,99,255,0.12); color:#a5b4fc; }
 
     /* ── HOW IT WORKS ── */
-    #how { background: var(--bg); }
+    #how { background: linear-gradient(160deg, #b2dfdb 0%, #e0f2f1 40%, #80deea 70%, #e0f7fa 100%); }
     .steps { display: flex; gap: 0; max-width: 900px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
     .step {
       flex: 1 1 220px; text-align: center; padding: 32px 24px;
@@ -317,7 +317,7 @@
     /* ── FOOTER ── */
     footer {
       position: relative; z-index: 1;
-      background: var(--bg); border-top: 1px solid var(--border);
+      background: linear-gradient(160deg, #b2dfdb 0%, #e0f2f1 40%, #80deea 70%, #e0f7fa 100%); border-top: 1px solid var(--border);
       padding: 60px 60px 36px;
     }
     .footer-top {
