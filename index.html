@@ -205,6 +205,124 @@
     }
     .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: rgba(108,99,255,0.08); }
 
+    .hero-image {
+      position: relative;
+      width: min(100%, 960px);
+      margin: 40px auto 0;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 22px 52px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: transform 0.35s ease;
+    }
+    .hero-image:hover { transform: translateY(-3px); }
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      min-height: 340px;
+      transition: opacity 0.5s ease;
+    }
+    .hero-image::after {
+      content: 'Tap to view the service gallery';
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      color: #ffffff;
+      background: rgba(0,0,0,0.35);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+    }
+    .hero-slide-text {
+      position: absolute;
+      left: 28px;
+      bottom: 28px;
+      z-index: 2;
+      color: #ffffff;
+      max-width: 560px;
+      text-shadow: 0 22px 50px rgba(0,0,0,0.35);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 24px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 24px 28px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.18);
+    }
+    .hero-slide-text.fade {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    .hero-slide-text .slide-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: rgba(255,255,255,0.92);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .hero-slide-text h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.35rem, 2vw, 2.35rem);
+      line-height: 1.05;
+      font-weight: 800;
+    }
+    .hero-slide-text p {
+      margin: 0;
+      max-width: 560px;
+      color: rgba(255,255,255,0.96);
+      font-size: 0.97rem;
+      line-height: 1.7;
+    }
+    .hero-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.32) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      min-height: 340px;
+      transition: opacity 0.5s ease;
+    }
+    .hero-image img.fade {
+      opacity: 0.27;
+    }
+    .slideshow-dots {
+      position: absolute;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 1;
+    }
+    .slideshow-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.38);
+      transition: transform 0.25s ease, background 0.25s ease;
+      cursor: pointer;
+    }
+    .slideshow-dot.active {
+      background: rgba(255,255,255,0.95);
+      transform: scale(1.2);
+    }
+
     .hero-stats {
       margin-top: 64px; display: flex; gap: 48px; flex-wrap: wrap; justify-content: center;
       animation: fadeDown 1.2s 0.4s ease both;
@@ -778,6 +896,8 @@
       .modal-header, .modal-body, .modal-footer { padding-left: 22px; padding-right: 22px; }
       .footer-top { grid-template-columns: 1fr; }
     }
+
+
   </style>
 </head>
 <body>
@@ -818,13 +938,17 @@
     <button class="btn-primary" onclick="scrollToServices()">Explore Services ↓</button>
     <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How it Works</button>
   </div>
-  <div class="hero-stats">
-    <div class="stat"><div class="stat-num" data-count="0">0</div><div class="stat-label">Bookings Completed</div></div>
-    <div class="stat"><div class="stat-num" data-count="100">0</div><div class="stat-label">Expert Professionals</div></div>
-    <div class="stat"><div class="stat-num" data-count="96">0</div><div class="stat-label">% Customer Satisfaction</div></div>
-    <div class="stat"><div class="stat-num" data-count="15">0</div><div class="stat-label">Service Categories</div></div>
-  </div>
-</section>
+<br>
+<br>
+<div class="hero-image" id="heroSlideshow" onclick="openLightbox(heroImages, currentHeroSlide)">
+   <img id="heroSlideImg" src="assets/30.jpeg" alt="Home Services slideshow">
+   <div class="hero-slide-text" id="heroSlideText">
+     <div class="slide-label">Featured services</div>
+     <h3 id="heroSlideTitle">Fresh meals and instant delivery</h3>
+     <p id="heroSlideSubtitle">Order groceries and ready-to-eat favorites from local shops.</p>
+   </div>
+   <div class="slideshow-dots" id="heroDots" aria-label="Hero slideshow navigation"></div>
+ </div>
 
 <!-- SERVICES -->
 <section id="services">
@@ -2321,6 +2445,66 @@ const waURL = 'https://wa.me/919110426336?text=' + encodeURIComponent(msg);
     particleContainer.appendChild(p);
   }
 
+  // ── HERO SLIDESHOW ──
+  var heroImages = [
+    'assets/30.jpeg',
+    'assets/300%20chicken.jpeg',
+    'assets/home%20rental.jpeg'
+  ];
+  var heroTitles = [
+    'Fresh meals and instant delivery',
+    'Premium chicken specials, delivered hot',
+    'Home rental listings in your neighborhood'
+  ];
+  var heroSubtitles = [
+    'Order groceries and ready-to-eat favorites from local shops.',
+    'Choose from top cuts and fast delivery for every meal.',
+    'Browse trusted rental homes and book the perfect stay.'
+  ];
+  var currentHeroSlide = 0;
+
+  function setHeroSlide(index) {
+    currentHeroSlide = (index + heroImages.length) % heroImages.length;
+    const slideImg = document.getElementById('heroSlideImg');
+    const slideText = document.querySelector('.hero-slide-text');
+    const slideTitle = document.getElementById('heroSlideTitle');
+    const slideSubtitle = document.getElementById('heroSlideSubtitle');
+    if (!slideImg || !slideText || !slideTitle || !slideSubtitle) return;
+    slideImg.classList.add('fade');
+    slideText.classList.add('fade');
+    setTimeout(() => {
+      slideImg.src = heroImages[currentHeroSlide];
+      slideImg.alt = `Hero slide ${currentHeroSlide + 1}`;
+      slideTitle.textContent = heroTitles[currentHeroSlide];
+      slideSubtitle.textContent = heroSubtitles[currentHeroSlide];
+      slideImg.classList.remove('fade');
+      slideText.classList.remove('fade');
+    }, 220);
+    document.querySelectorAll('.slideshow-dot').forEach((dot, dotIndex) => {
+      dot.classList.toggle('active', dotIndex === currentHeroSlide);
+    });
+  }
+
+  function createHeroDots() {
+    const dotsContainer = document.getElementById('heroDots');
+    if (!dotsContainer) return;
+    heroImages.forEach((_, dotIndex) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'slideshow-dot';
+      dot.setAttribute('aria-label', `Show slide ${dotIndex + 1}`);
+      dot.addEventListener('click', event => {
+        event.stopPropagation();
+        setHeroSlide(dotIndex);
+      });
+      dotsContainer.appendChild(dot);
+    });
+    setHeroSlide(0);
+  }
+
+  createHeroDots();
+  setInterval(() => setHeroSlide(currentHeroSlide + 1), 4500);
+
   // ── LIGHTBOX ──
   let _lbPhotos = [], _lbIdx = 0;
   function openLightbox(photos, idx) {
@@ -2338,6 +2522,8 @@ const waURL = 'https://wa.me/919110426336?text=' + encodeURIComponent(msg);
     document.getElementById('lightboxImg').src = _lbPhotos[_lbIdx];
     document.getElementById('lightboxCounter').textContent = `${_lbIdx+1} / ${_lbPhotos.length}`;
   }
+
+
 
   // ── ESC key ──
   document.addEventListener('keydown', e => {
