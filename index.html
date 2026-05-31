@@ -1,8 +1,8 @@
-﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
 <title>Fixipro – All Services at Your Doorstep</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
       --shadow: 0 8px 40px rgba(2,6,23,0.10);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: auto; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -216,8 +216,8 @@
 
     .hero-image {
       position: relative;
-      width: min(100%, 960px);
-      margin: 40px auto 0;
+      width: calc(100% + 48px);
+      margin: 40px -24px 0;
       border-radius: 24px;
       overflow: hidden;
       box-shadow: 0 22px 52px rgba(0,0,0,0.12);
@@ -351,7 +351,7 @@
     }
 
     /* ── SECTION COMMON ── */
-    section { position: relative; z-index: 1; padding: 100px 24px; }
+    section { position: relative; z-index: 1; padding: 100px 24px; width: 100%; }
     .section-title {
       text-align: center; margin-bottom: 16px;
       font-family: 'Poppins', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem);
@@ -370,11 +370,11 @@
     }
 
     /* ── SERVICES GRID ── */
-    #services { background: var(--bg2); }
+    #services { background: var(--bg2); width: 100%; }
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 26px; max-width: 1200px; margin: 0 auto;
+      gap: 26px; width: 100%; padding: 0 24px;
     }
     .service-card {
       background: rgba(255,255,255,0.08);
@@ -447,8 +447,8 @@
     .c9 .card-icon { background: rgba(108,99,255,0.15); }  .c9 .card-tag { background:rgba(108,99,255,0.12); color:#a5b4fc; }
 
     /* ── HOW IT WORKS ── */
-    #how { background: linear-gradient(160deg, rgba(183,28,28,0.08) 0%, rgba(255,112,67,0.12) 30%, rgba(255,176,124,0.18) 60%, rgba(255,239,235,0.95) 100%); }
-    .steps { display: flex; gap: 0; max-width: 900px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+    #how { background: linear-gradient(160deg, rgba(183,28,28,0.08) 0%, rgba(255,112,67,0.12) 30%, rgba(255,176,124,0.18) 60%, rgba(255,239,235,0.95) 100%); width: 100%; }
+    .steps { display: flex; gap: 0; width: 100%; flex-wrap: wrap; justify-content: center; }
     .step {
       flex: 1 1 220px; text-align: center; padding: 32px 24px;
       position: relative;
@@ -471,11 +471,13 @@
     .step p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; }
 
     /* ── TESTIMONIALS ── */
-    #reviews { background: var(--bg2); }
+    #reviews { background: var(--bg2); width: 100%; }
+    #partners { width: 100%; }
+    #contact { width: 100%; }
     .reviews-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px; max-width: 1100px; margin: 0 auto;
+      gap: 24px; width: 100%; padding: 0 24px;
     }
     .review-card {
       background: rgba(255,255,255,0.07);
@@ -505,6 +507,7 @@
       position: relative; z-index: 1;
       background: linear-gradient(160deg, #fbe9e7 0%, #ffccbc 30%, #ffe0b2 60%, #fff3e0 100%); border-top: 1px solid var(--border);
       padding: 60px 60px 36px;
+      width: 100%;
     }
     .footer-top {
       display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px;
@@ -989,12 +992,14 @@
       nav { padding: 16px 24px; }
       .nav-links { display:none; }
       .footer-top { grid-template-columns: 1fr 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
     }
     @media(max-width:640px) {
       .form-grid { grid-template-columns: 1fr; }
       .form-group.full { grid-column: span 1; }
       .modal-header, .modal-body, .modal-footer { padding-left: 22px; padding-right: 22px; }
       .footer-top { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
     }
 
 
