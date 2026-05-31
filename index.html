@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -143,21 +143,21 @@
     .nav-links a:hover { color: var(--text); }
     .nav-links a:hover::after { width:100%; }
     .btn-nav {
-      background: rgba(255,255,255,0.12);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
-      border: 1.5px solid rgba(108,99,255,0.22);
+      border: none;
       padding: 10px 26px;
       border-radius: 50px;
       font-weight: 700;
       cursor: pointer;
       font-size: 0.9rem;
       transition: all 0.3s;
-      box-shadow: var(--neo-shadow-out);
+      box-shadow: 0 10px 28px rgba(183, 28, 28, 0.28);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
     }
 
-    .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,0.5); }
+    .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(183, 28, 28, 0.4); }
 
     /* ── HERO ── */
     .hero {
@@ -205,13 +205,14 @@
     }
     .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(108,99,255,0.55); }
     .btn-outline {
-      background: transparent;
-      color: var(--text); border: 1.5px solid var(--border);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white; border: none;
       padding: 15px 38px; border-radius: 50px;
       font-weight: 600; cursor: pointer; font-size: 1rem;
       transition: all 0.3s;
+      box-shadow: 0 8px 24px rgba(183, 28, 28, 0.22);
     }
-    .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: rgba(108,99,255,0.08); }
+    .btn-outline:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(183, 28, 28, 0.32); }
 
     .hero-image {
       position: relative;
@@ -446,7 +447,7 @@
     .c9 .card-icon { background: rgba(108,99,255,0.15); }  .c9 .card-tag { background:rgba(108,99,255,0.12); color:#a5b4fc; }
 
     /* ── HOW IT WORKS ── */
-    #how { background: linear-gradient(160deg, #fbe9e7 0%, #ffccbc 30%, #ffe0b2 60%, #fff3e0 100%); }
+    #how { background: linear-gradient(160deg, rgba(183,28,28,0.08) 0%, rgba(255,112,67,0.12) 30%, rgba(255,176,124,0.18) 60%, rgba(255,239,235,0.95) 100%); }
     .steps { display: flex; gap: 0; max-width: 900px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
     .step {
       flex: 1 1 220px; text-align: center; padding: 32px 24px;
@@ -460,11 +461,11 @@
     }
     .step-num {
       width: 56px; height: 56px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), #10b981);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 1.3rem;
       margin: 0 auto 20px;
-      box-shadow: 0 4px 20px rgba(108,99,255,0.35);
+      box-shadow: 0 4px 20px rgba(183,28,28,0.15);
     }
     .step h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
     .step p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; }
@@ -828,6 +829,97 @@
     }
 
     .toast.show { transform: translateX(0); }
+
+    /* ── CHAT WIDGET ── */
+    .chat-backdrop {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .chat-backdrop.active {
+      opacity: 1; pointer-events: all;
+    }
+    .chat-modal {
+      width: min(100%, 420px);
+      max-height: 92vh;
+      background: #ffffff;
+      border: 1px solid rgba(209,213,219,0.56);
+      border-radius: 24px;
+      box-shadow: 0 22px 60px rgba(15,23,42,0.15);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .chat-header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px;
+      background: #ffffff;
+      border-bottom: 1px solid rgba(229,231,235,0.8);
+    }
+    .chat-header h3 {
+      margin: 0; font-size: 1rem; font-weight: 800;
+      color: #111827;
+    }
+    .chat-header p {
+      margin: 4px 0 0;
+      color: #6b7280;
+      font-size: 0.84rem;
+    }
+    .chat-close {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(229,231,235,0.8); border: none;
+      color: #374151;
+      cursor: pointer; font-size: 1.2rem;
+      display: grid; place-items: center;
+    }
+    .chat-body {
+      flex: 1; padding: 18px 18px 12px;
+      display: flex; flex-direction: column; gap: 12px;
+      overflow-y: auto;
+      min-height: 280px;
+      background: #f8fafc;
+    }
+    .chat-message {
+      max-width: 88%; padding: 12px 14px;
+      border-radius: 18px;
+      line-height: 1.5;
+      word-break: break-word;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+    }
+    .chat-message.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-bottom-right-radius: 6px;
+    }
+    .chat-message.bot {
+      align-self: flex-start;
+      background: #ffffff;
+      color: #111827;
+      border-bottom-left-radius: 6px;
+      border: 1px solid rgba(229,231,235,0.9);
+    }
+    .chat-input-bar {
+      display: flex; gap: 10px; padding: 16px 18px 20px;
+      background: #ffffff;
+      border-top: 1px solid rgba(229,231,235,0.8);
+    }
+    .chat-input {
+      flex: 1; border-radius: 999px; border: 1.5px solid rgba(209,213,219,0.95);
+      background: #f8fafc; color: #111827; padding: 12px 16px;
+      outline: none; font-size: 0.95rem;
+    }
+    .chat-send {
+      border: none; border-radius: 50px; padding: 12px 18px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white; font-weight: 700; cursor: pointer;
+      box-shadow: 0 8px 22px rgba(183,28,28,0.14);
+    }
+    .chat-send:disabled { opacity: 0.65; cursor: not-allowed; }
     .toast-icon { font-size: 1.4rem; flex-shrink: 0; }
     .toast-msg strong { display: block; font-size: 0.9rem; margin-bottom: 2px; }
     .toast-msg span { color: var(--text-muted); font-size: 0.82rem; }
@@ -1051,7 +1143,7 @@
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="pill-label" style="display:block;text-align:center">Simple Steps</div>
-  <h2 class="section-title reveal">How It <span style="background:linear-gradient(135deg,#6c63ff,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Works</span></h2>
+  <h2 class="section-title reveal">How It <span style="background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Works</span></h2>
   <p class="section-sub reveal">Booking a service has never been easier.</p>
   <div class="steps">
     <div class="step reveal">
@@ -1109,24 +1201,42 @@
 <section id="contact" style="background:var(--bg3); border-top:1px solid var(--border);">
   <div class="pill-label" style="display:block;text-align:center">Get In Touch</div>
   <h2 class="section-title reveal">Need <span style="background:linear-gradient(135deg,#6c63ff,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Help?</span></h2>
-  <p class="section-sub reveal">Our support team is available 24/7 to assist you.</p>
+  <p class="section-sub reveal" style="margin-bottom:32px;">Our support team is available 24/7 to assist you.</p>
   <div style="display:flex;gap:24px;flex-wrap:wrap;max-width:800px;margin:0 auto;justify-content:center;">
-    <div class="review-card reveal" style="flex:1;min-width:220px;text-align:center;padding:36px 24px;">
+    <a href="tel:+9110426336" class="review-card reveal" style="flex:1;min-width:220px;text-align:center;padding:36px 24px;text-decoration:none;color:inherit;">
       <div style="font-size:2.4rem;margin-bottom:14px;">📞</div>
       <h4 style="margin-bottom:8px;">Call Us</h4>
-      <p style="color:var(--text-muted);font-size:0.88rem;">+1 (800) SERVE-NOW</p>
-    </div>
+      <p style="color:var(--text-muted);font-size:0.88rem;">Tap to call directly</p>
+    </a>
     <div class="review-card reveal" style="flex:1;min-width:220px;text-align:center;padding:36px 24px;">
-      <div style="font-size:2.4rem;margin-bottom:14px;">💬</div>
       <h4 style="margin-bottom:8px;">Live Chat</h4>
       <p style="color:var(--text-muted);font-size:0.88rem;">Chat with an agent instantly</p>
+      <button type="button" class="btn-primary" style="margin-top:16px;padding:10px 18px;font-size:0.9rem;" onclick="openChat()">Start Chat</button>
     </div>
-    <div class="review-card reveal" style="flex:1;min-width:220px;text-align:center;padding:36px 24px;">
+    <a href="mailto:fixipro24@gmail.com" class="review-card reveal" style="flex:1;min-width:220px;text-align:center;padding:36px 24px;text-decoration:none;color:inherit;">
       <div style="font-size:2.4rem;margin-bottom:14px;">✉️</div>
-      <h4 style="margin-bottom:8px;">Email</h4>fixipro24@gmail.com
-    </div>
+      <h4 style="margin-bottom:8px;">Email</h4>
+      <p style="color:var(--text-muted);font-size:0.88rem;">fixipro24@gmail.com</p>
+    </a>
   </div>
 </section>
+
+<div class="chat-backdrop" id="chatBackdrop" onclick="closeChatOnBg(event)">
+  <div class="chat-modal" onclick="event.stopPropagation()">
+    <div class="chat-header">
+      <div>
+        <h3>Fixipro Assistant</h3>
+        <p>Ask me about services, bookings, and orders.</p>
+      </div>
+      <button class="chat-close" onclick="closeChat()">✕</button>
+    </div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-input-bar">
+      <input id="chatInput" class="chat-input" type="text" placeholder="Type your question..." autocomplete="off" />
+      <button class="chat-send" id="chatSend" onclick="handleChatSend()">Send</button>
+    </div>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -2390,6 +2500,71 @@ const waURL = 'https://wa.me/919110426336?text=' + encodeURIComponent(msg);
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 4000);
   }
+
+  let chatStarted = false;
+  const chatBotResponses = [
+    { pattern: /hello|hi|hey|good (morning|afternoon|evening)/i, response: 'Hello! I am your Fixipro assistant. I can help you book services, track orders, or answer general questions.' },
+    { pattern: /service|repair|home|appliance|installation|rent|rental/i, response: 'We offer construction, home repairs, appliances, installation, rentals, groceries, food, meat, and courier services. Which one would you like to book?' },
+    { pattern: /grocery|groceries|food|meals/i, response: 'Need groceries or food delivery? I can help you choose the right service and send your request quickly.' },
+    { pattern: /meat|chicken|beef|mutton|seafood/i, response: 'I can help you place a meat order with fresh cuts and delivery details. Tell me what you need.' },
+    { pattern: /courier|parcel|delivery|document/i, response: 'For courier services, please share pickup and delivery locations plus any urgency requirements.' },
+    { pattern: /rental|rent|home rental|listing/i, response: 'Want to browse rentals or post a listing? I can open the rental flow for you to view or add available homes.' },
+    { pattern: /book|booking|appointment/i, response: 'I can help you book a service. Please tell me which service, your preferred date, and location.' },
+    { pattern: /help|support|assist/i, response: 'I am here to help. Ask me about any service category, how to order, or how to contact our team.' },
+    { pattern: /.*/i, response: 'I am here to help! Tell me what you need—service booking, grocery order, rental information, meat delivery, or courier support.' }
+  ];
+
+  function openChat() {
+    const backdrop = document.getElementById('chatBackdrop');
+    const input = document.getElementById('chatInput');
+    backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    if (!chatStarted) {
+      addChatMessage('bot', 'Hi there! I am Fixipro Assistant. How can I help you today?');
+      chatStarted = true;
+    }
+    setTimeout(() => input.focus(), 200);
+  }
+
+  function closeChat() {
+    document.getElementById('chatBackdrop').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function closeChatOnBg(event) {
+    if (event.target.id === 'chatBackdrop') closeChat();
+  }
+
+  function addChatMessage(sender, text) {
+    const body = document.getElementById('chatBody');
+    const div = document.createElement('div');
+    div.className = `chat-message ${sender}`;
+    div.textContent = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function handleChatSend() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    addChatMessage('user', text);
+    input.value = '';
+    setTimeout(() => respondChat(text), 400);
+  }
+
+  function respondChat(text) {
+    const match = chatBotResponses.find(item => item.pattern.test(text));
+    const response = match ? match.response : 'I am here to help. Please tell me what service or question you have.';
+    addChatMessage('bot', response);
+  }
+
+  document.getElementById('chatInput').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleChatSend();
+    }
+  });
 
   // ── SCROLL-REVEAL ──
   const revealObserver = new IntersectionObserver((entries) => {
